@@ -9,6 +9,7 @@ class XDBaseObject : public XDNoncopyable
 public:
     XDBaseObject();
     virtual ~XDBaseObject();
+    int32 getID() const { return ID_; }
 protected:
     int32 ID_; // 对象唯一ID
 };
