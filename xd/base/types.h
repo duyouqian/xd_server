@@ -30,6 +30,8 @@ typedef long long           int64;
 typedef int32 XDPollFD;
 // sock id
 typedef int32 XDSockFD;
+// sock handle
+typedef int64 XDHandle;
 
 // 在cpp 编译器下使用c编译
 #ifdef __cplusplus

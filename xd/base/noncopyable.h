@@ -7,7 +7,7 @@ class XDNoncopyable
 public:
     XDNoncopyable() {}
     virtual ~XDNoncopyable() {}
-private:
+protected:
     XDNoncopyable(const XDNoncopyable&);
     const XDNoncopyable& operator = (const XDNoncopyable&);
 };

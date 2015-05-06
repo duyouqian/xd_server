@@ -1,10 +1,14 @@
 #include "socket.h"
+#include <string.h>
+
+XDHandle XDBaseSocket::sHandle_ = 0;
 
 XDBaseSocket::XDBaseSocket()
             : fd_(-1)
             , state_(ST_INIT)
+            , handle_(++sHandle_)
 {
-
+    memset(addr_.ip, 0, sizeof(addr_.ip));
 }
 
 XDBaseSocket::~XDBaseSocket()

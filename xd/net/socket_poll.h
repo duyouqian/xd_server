@@ -25,7 +25,7 @@ XDPollFD create();
 void release(XDPollFD fd);
 
 // 添加socket event
-// return 1: success, 0 : failure
+// return 0 : success, 1 : failure
 int32 add(XDPollFD fd, XDSockFD sock, void *ud);
 
 // 删除

@@ -3,8 +3,11 @@
 #include "log.h"
 #include "atomic_counter.h"
 #include "socket_util.h"
+#include "refcount.h"
 #include <deque>
 #include <functional>
+#include <string>
+#include <memory>
 
 class Obj1 : public XDBaseObject
 {
@@ -47,6 +50,39 @@ private:
     int32 ID_;
 };
 
+class Obj6 : public XDRefCounted
+{
+public:
+    Obj6() { }
+    ~Obj6() { XD_LOG_mdebug("[Obj6] delete counter:%d", referenceCount()); }
+};
+
+class Base1
+{
+public:
+    virtual std::string getName() const { return std::move(std::string("Base1")); }
+};
+
+class Obj7 : public Base1
+{
+public:
+    virtual std::string getName() const { return std::move(std::string("Obj7")); }
+    virtual std::string getName2() const { return std::move(std::string("Obj7")); }
+};
+
+class Obj8
+{
+public:
+    Obj8(Base1 *b) : b_(b) { }
+    void exec()
+    {
+        XD_LOG_mdebug("[Obj8] %s", b_->getName().c_str());
+    }
+
+private:
+    Base1 *b_;
+};
+
 void fun1(Obj5 &obj)
 {
     XD_LOG_mdebug("[FUN1] Obj4::ID=%d", obj.getID());
@@ -79,12 +115,24 @@ int32 main(int32 argc, char **argv)
     
     std::function<void()> fun;
 
+//    {
+//        Obj6 t5(10);
+//        fun = std::bind(fun1, t5);
+//    }
+
+//    fun();
+
     {
-        Obj5 t5(10);
-        fun = std::bind(fun1, t5);
+        Obj6 *t6 = new Obj6();
+        t6->release();
     }
 
-    fun();
+    std::shared_ptr<Base1> basePtr(new Obj7());
+    Obj7 *t9 = (Obj7 *)basePtr.get();
+
+    Obj7 t7;
+    Obj8 t8(&t7);
+    t8.exec();
 
     XD_LOG_CLOSE();
     return 0;

@@ -1,11 +1,13 @@
 #ifndef XD_SOCKET_H
 #define XD_SOCKET_H
 
-#include "../base/base_object.h"
 #include "../base/socket_util.h"
+#include "../base/refcount.h"
 
-class XDBaseSocket : public XDBaseObject
+class XDBaseSocket : public XDRefCounted
 {
+private:
+    static XDHandle sHandle_;
 protected:
     enum XDSocketState
     {
@@ -21,16 +23,20 @@ public:
 
     virtual bool create() = 0;
     // send
-    int32 send(void *data, int32 len);
+    virtual int32 send(void *data, int32 len);
     // read
-    int32 read(void *data, int32 len);
+    virtual int32 read(void *data, int32 len);
     // close
-    void close();
+    virtual void close();
+
+    XDSockFD fd() const { return fd_; }
+    XDHandle handle() const { return handle_; }
 
 protected:
     XDSockFD fd_;
     XDSocketState state_;
     XDSocketUtil::XDSockAddr addr_;
+    XDHandle handle_;
 };
 
 #endif // end xd_socket_h
