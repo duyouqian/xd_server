@@ -40,6 +40,10 @@ class Obj5
 {
 public:
     explicit Obj5(int32 id) : ID_(id) { }
+    Obj5(const Obj5 &v) : ID_(v.ID_)
+    {
+
+    }
     ~Obj5()
     {
         //printf("[Obj5] delete\n");
@@ -54,6 +58,11 @@ class Obj6 : public XDRefCounted
 {
 public:
     Obj6() { }
+    Obj6(const Obj6 &v)
+    {
+
+    }
+
     ~Obj6() { XD_LOG_mdebug("[Obj6] delete counter:%d", referenceCount()); }
 };
 
@@ -66,8 +75,11 @@ public:
 class Obj7 : public Base1
 {
 public:
+    Obj7() : t(10) { }
     virtual std::string getName() const { return std::move(std::string("Obj7")); }
     virtual std::string getName2() const { return std::move(std::string("Obj7")); }
+private:
+    int t;
 };
 
 class Obj8
@@ -81,6 +93,20 @@ public:
 
 private:
     Base1 *b_;
+};
+
+class Obj9
+{
+public:
+    Obj9(void *t) : ptr_(t) { }
+
+    void exce()
+    {
+
+    }
+
+private:
+    void *ptr_;
 };
 
 void fun1(Obj5 &obj)
@@ -115,12 +141,12 @@ int32 main(int32 argc, char **argv)
     
     std::function<void()> fun;
 
-//    {
-//        Obj6 t5(10);
-//        fun = std::bind(fun1, t5);
-//    }
+    {
+        Obj5 t5(10);
+        fun = std::bind(fun1, t5);
+    }
 
-//    fun();
+    fun();
 
     {
         Obj6 *t6 = new Obj6();
@@ -129,6 +155,9 @@ int32 main(int32 argc, char **argv)
 
     std::shared_ptr<Base1> basePtr(new Obj7());
     Obj7 *t9 = (Obj7 *)basePtr.get();
+
+    Obj9 t10(basePtr.get());
+    basePtr.reset();
 
     Obj7 t7;
     Obj8 t8(&t7);

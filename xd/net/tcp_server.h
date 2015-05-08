@@ -2,24 +2,30 @@
 #define XD_TCP_SERVER_H
 
 #include "socket_server.h"
-#include <memory>
-#include <map>
+#include "tcp_server_dispatcher.h"
 
-class XDSocketConnection;
+class XDTcpServerSocketEventHandler;
+class XDMessage;
 
 class XDTcpServer : public XDSocketServer
 {
 public:
-    typedef std::shared_ptr<XDSocketConnection> connPtr;
     XDTcpServer();
     ~XDTcpServer();
 
-    bool init(int32 port);
-    virtual bool accept();
-    bool disconnect(XDHandle handle);
+    void setHandler(XDTcpServerSocketEventHandler *handler) { handler_ = handler; }
 
-protected:
-    std::map<XDHandle, connPtr> conns_;
+    bool init(int32 port);
+    virtual bool start();
+    virtual bool accept();
+
+public:
+    void connMessageCallBack(XDHandle handle, XDMessage &message);
+    void connDisconnectCallBack(XDHandle handle);
+
+private:
+    XDTcpServerDispatcher dispatcher_;
+    XDTcpServerSocketEventHandler *handler_;
 };
 
 #endif // end xd_tcp_server_h

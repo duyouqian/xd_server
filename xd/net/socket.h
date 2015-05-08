@@ -1,11 +1,14 @@
 #ifndef XD_SOCKET_H
 #define XD_SOCKET_H
 
-#include "../base/socket_util.h"
+#include "../base/socket_addr.h"
 #include "../base/refcount.h"
+
+class XDTcpServer;
 
 class XDBaseSocket : public XDRefCounted
 {
+    friend class XDTcpServer;
 private:
     static XDHandle sHandle_;
 protected:
@@ -30,7 +33,10 @@ public:
     virtual void close();
 
     XDSockFD fd() const { return fd_; }
+    void setFD(XDSockFD fd) { fd_ = fd; }
     XDHandle handle() const { return handle_; }
+    XDSocketUtil::XDSockAddr& address() { return addr_; }
+    XDSocketUtil::XDSockAddr* addressPtr() { return &addr_; }
 
 protected:
     XDSockFD fd_;

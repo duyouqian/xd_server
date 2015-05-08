@@ -16,6 +16,7 @@ public:
 
     bool init(const char *ip, int32 port);
     bool init(int32 port);
+    XDSockFD accept(XDSocketUtil::XDSockAddr *addr);
 };
 
 

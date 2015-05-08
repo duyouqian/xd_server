@@ -1,4 +1,5 @@
 #include "socket.h"
+#include "../base/socket_util.h"
 #include <string.h>
 
 XDHandle XDBaseSocket::sHandle_ = 0;

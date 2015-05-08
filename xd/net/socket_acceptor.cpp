@@ -1,4 +1,5 @@
 #include "socket_acceptor.h"
+#include "../base/socket_util.h"
 #include "../base/log.h"
 #include <stdio.h>
 
@@ -20,6 +21,11 @@ XDSocketAccept::XDSocketAccept(int32 port)
 {
     snprintf(addr_.ip, sizeof(addr_.ip), "%s", "0.0.0.0");
     addr_.port = port;
+}
+
+XDSocketAccept::~XDSocketAccept()
+{
+
 }
 
 bool XDSocketAccept::init(const char *ip, int32 port)
@@ -53,4 +59,13 @@ bool XDSocketAccept::create()
     }
     state_ = ST_CONNECTED;
     return true;
+}
+
+XDSockFD XDSocketAccept::accept(XDSocketUtil::XDSockAddr *addr)
+{
+    if (state_ != ST_CONNECTED) {
+        return -1;
+    }
+    XDSockFD connFD = XDSocketUtil::accept(fd_, addr);
+    return connFD;
 }
