@@ -3,15 +3,12 @@
 
 #include "socket.h"
 #include "message.h"
-#include <memory>
-#include <functional>
 
 class XDTcpServer;
 
 class XDSocketConnection : public XDBaseSocket
 {
 public:
-    typedef std::shared_ptr<XDSocketConnection> ConnPtr;
     XDSocketConnection(XDTcpServer &server);
     ~XDSocketConnection();
 
@@ -21,6 +18,7 @@ public:
     int32 workThreadIndex() const { return workThreadIndex_; }
 
     int32 read();
+    void onClose();
 
 protected:
     typedef bool(XDSocketConnection::*XDReadHandle)();

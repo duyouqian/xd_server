@@ -12,9 +12,9 @@ public:
     XDTcpServerSocketEventHandler() { }
     virtual ~XDTcpServerSocketEventHandler() { }
 
-    virtual void onAccept(XDSocketConnection::ConnPtr socket) = 0;
-    virtual void onDisconnect(XDSocketConnection::ConnPtr socket) = 0;
-    virtual void onMessage(XDSocketConnection::ConnPtr socket, XDMessage& message) = 0;
+    virtual void onAccept(XDSocketConnectionPtr socket) = 0;
+    virtual void onDisconnect(XDSocketConnectionPtr socket) = 0;
+    virtual void onMessage(XDSocketConnectionPtr socket, XDMessage& message) = 0;
 };
 
 #endif // end xd_socket_handler_h

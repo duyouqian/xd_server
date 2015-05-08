@@ -23,11 +23,13 @@ bool XDTcpSocketServerWorkThread::handleReadMessage(XDSocketPoll::XDEvent *event
 bool XDTcpSocketServerWorkThread::closeSocket(XDSockFD fd)
 {
     XDSocketPoll::del(pollFD_, fd);
+    return true;
 }
 
 bool XDTcpSocketServerWorkThread::handleSendMessage(XDSocketPoll::XDEvent *event)
 {
-
+    XDSocketConnection *conn = (XDSocketConnection*)event->ptr;
+    return true;
 }
 
 XDTcpServerDispatcher::XDTcpServerDispatcher(XDTcpServer *server)
@@ -58,6 +60,7 @@ bool XDTcpServerDispatcher::init()
         workerThreads_[i].setName(name);
         workerThreads_[i].setOwner(this);
     }
+    return true;
 }
 
 bool XDTcpServerDispatcher::accept()
@@ -65,7 +68,7 @@ bool XDTcpServerDispatcher::accept()
     return true;
 }
 
-bool XDTcpServerDispatcher::accept(XDSocketConnection::ConnPtr newConn)
+bool XDTcpServerDispatcher::accept(XDSocketConnectionPtr newConn)
 {
     if (!workerThreads_[workerIndex_ % threadNum_].acceptNewConnect(newConn->fd(), newConn.get())) {
         return false;
@@ -95,9 +98,9 @@ bool XDTcpServerDispatcher::handleSendMessage(XDSocketPoll::XDEvent *event)
 bool XDTcpServerDispatcher::disconnect(XDHandle handle)
 {
     XDGuardMutex lock(&mutex_);
-    std::map<XDHandle, XDSocketConnection::ConnPtr>::iterator it = conns_.find(handle);
+    std::map<XDHandle, XDSocketConnectionPtr>::iterator it = conns_.find(handle);
     if (conns_.end() != it) {
-        XDSocketConnection::ConnPtr conn = it->second;
+        XDSocketConnectionPtr conn = it->second;
         XD_LOG_mdebug("[TcpServer] handle:%d fd:%d 断开", handle, conn->fd());
         conn->close();
         conns_.erase(it);
@@ -107,10 +110,10 @@ bool XDTcpServerDispatcher::disconnect(XDHandle handle)
 
 bool XDTcpServerDispatcher::closeSocket(XDHandle handle)
 {
-    XDSocketConnection::ConnPtr conn;
+    XDSocketConnectionPtr conn;
     {
         XDGuardMutex lock(&mutex_);
-        std::map<XDHandle, XDSocketConnection::ConnPtr>::iterator it = conns_.find(handle);
+        std::map<XDHandle, XDSocketConnectionPtr>::iterator it = conns_.find(handle);
         if (conns_.end() != it) {
             conn = it->second;
         }
@@ -122,10 +125,10 @@ bool XDTcpServerDispatcher::closeSocket(XDHandle handle)
     return true;
 }
 
-XDSocketConnection::ConnPtr XDTcpServerDispatcher::findConnectByHandle(XDHandle handle)
+XDSocketConnectionPtr XDTcpServerDispatcher::findConnectByHandle(XDHandle handle)
 {
     XDGuardMutex lock(&mutex_);
-    std::map<XDHandle, XDSocketConnection::ConnPtr>::const_iterator it = conns_.find(handle);
+    std::map<XDHandle, XDSocketConnectionPtr>::const_iterator it = conns_.find(handle);
     if (conns_.end() != it) {
         return it->second;
     }

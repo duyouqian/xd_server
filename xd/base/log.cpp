@@ -350,19 +350,19 @@ static void exec_log_item(log_t *l, LQ_ITEM *item)
     
     /* thread */
     char thread_info[32];
-    snprintf(thread_info, 32, "[tid=%lu] ", item->thread);
+    snprintf(thread_info, 32, "[tid=%d] ", item->thread);
     
     if (l->ctrl_stdout) {
         if (l->ctrl_locate) {
             char buf[1024];
             snprintf(buf, 1024, "%s%s%s%s%s%s%s%s\n",
                      clr, lv_color, timestamp, lv_text, thread_info, const_basename(item->locate), item->context, clr);
-            printf(buf);
+            printf("%s", buf);
         } else {
             char buf[1024];
             snprintf(buf, 1024, "%s%s%s%s%s%s%s\n",
                      clr, lv_color, timestamp, lv_text, thread_info, item->context, clr);
-            printf(buf);
+            printf("%s", buf);
         }
     }
     

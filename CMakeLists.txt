@@ -41,7 +41,7 @@ ADD_SUBDIRECTORY(xd)
 # 第三方库
 ADD_SUBDIRECTORY(3rd)
 # pb
-#ADD_SUBDIRECTORY(pb)
+ADD_SUBDIRECTORY(pb)
 # 应用
 # cpp服务
 #ADD_SUBDIRECTORY(service)

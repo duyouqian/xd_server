@@ -6,9 +6,9 @@ class XDNetServerSocketEventHandler : public XDTcpServerSocketEventHandler
 public:
     XDNetServerSocketEventHandler(XDNetService &service);
     ~XDNetServerSocketEventHandler();
-    virtual void onAccept(XDSocketConnection::ConnPtr socket);
-    virtual void onDisconnect(XDSocketConnection::ConnPtr socket);
-    virtual void onMessage(XDSocketConnection::ConnPtr socket, XDMessage& message);
+    virtual void onAccept(XDSocketConnectionPtr socket);
+    virtual void onDisconnect(XDSocketConnectionPtr socket);
+    virtual void onMessage(XDSocketConnectionPtr socket, XDMessage& message);
 
 private:
     XDNetService &service_;
@@ -26,19 +26,20 @@ XDNetServerSocketEventHandler::~XDNetServerSocketEventHandler()
 
 }
 
-void XDNetServerSocketEventHandler::onAccept(XDSocketConnection::ConnPtr socket)
+void XDNetServerSocketEventHandler::onAccept(XDSocketConnectionPtr socket)
 {
-
+    // 创建 session
+    socket->onClose();
 }
 
-void XDNetServerSocketEventHandler::onDisconnect(XDSocketConnection::ConnPtr socket)
+void XDNetServerSocketEventHandler::onDisconnect(XDSocketConnectionPtr socket)
 {
-
+    // 移除 session
 }
 
-void XDNetServerSocketEventHandler::onMessage(XDSocketConnection::ConnPtr socket, XDMessage& message)
+void XDNetServerSocketEventHandler::onMessage(XDSocketConnectionPtr socket, XDMessage& message)
 {
-
+    // 消息处理
 }
 
 XDNetService::XDNetService(XDApp &app)
@@ -52,11 +53,13 @@ XDNetService::~XDNetService()
 
 }
 
+// event poll thread
 bool XDNetService::start()
 {
     if (frontedTcpServer_.start()) {
         frontedTcpServer_.poll();
     }
+    return true;
 }
 
 void XDNetService::afterStart()

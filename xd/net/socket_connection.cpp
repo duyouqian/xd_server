@@ -30,6 +30,12 @@ bool XDSocketConnection::create()
     return true;
 }
 
+// close
+void XDSocketConnection::onClose()
+{
+    server_.connDisconnectCallBack(handle_);
+}
+
 void XDSocketConnection::nextReadStep(char *buf,
                                       int32 size,
                                       XDReadHandle handle)
@@ -60,7 +66,6 @@ int32 XDSocketConnection::read()
 // return -1:错误, 0:关闭 1:正常
 int32 XDSocketConnection::processReadBuffer()
 {
-    int32 pos = 0;
     while (1) {
         while (!toRead_) {
             // 读取完毕

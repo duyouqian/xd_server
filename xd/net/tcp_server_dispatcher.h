@@ -18,18 +18,18 @@ public:
 
     // for socket-server thread --singleton thread
     virtual bool accept();
-    virtual bool accept(XDSocketConnection::ConnPtr newConn);
+    virtual bool accept(XDSocketConnectionPtr newConn);
     // for socket-worker thread --multi thread 需要加锁
     virtual bool handleReadMessage(XDSocketPoll::XDEvent *event);
     virtual bool handleSendMessage(XDSocketPoll::XDEvent *event);
     virtual bool disconnect(XDHandle handle);
     virtual bool closeSocket(XDHandle handle);
 
-    XDSocketConnection::ConnPtr findConnectByHandle(XDHandle handle);
+    XDSocketConnectionPtr findConnectByHandle(XDHandle handle);
 
 private:
     XDTcpServer* server_;
-    std::map<XDHandle, XDSocketConnection::ConnPtr> conns_;
+    std::map<XDHandle, XDSocketConnectionPtr> conns_;
     XDMutex mutex_;
 };
 

@@ -13,7 +13,7 @@
 class XDTcpIOEventTask : public XDITask
 {
 public:
-    XDTcpIOEventTask(int32 type) : eventType(type), message() { }
+    XDTcpIOEventTask(int32 type) : message(), eventType(type) { }
     ~XDTcpIOEventTask()
     {
 
@@ -30,7 +30,7 @@ public:
         }
     }
 
-    XDSocketConnection::ConnPtr conn;
+    XDSocketConnectionPtr conn;
     XDMessage message;
     XDTcpServerSocketEventHandler *handler;
     int32 eventType; // 0: create 1: message 2: disconnection
@@ -70,7 +70,7 @@ bool XDTcpServer::start()
 bool XDTcpServer::accept()
 {
     XD_LOG_mdebug("[TcpServer] serverName:%s 有新连接", "TcpServer");
-    XDSocketConnection::ConnPtr conn(new XDSocketConnection(*this));
+    XDSocketConnectionPtr conn(new XDSocketConnection(*this));
     XDSockFD connFD = serverSocketFD_.accept(conn->addressPtr());
     if (-1 == connFD) {
         XD_LOG_mdebug("[TcpServer] serverName:%s accept 失败", "TcpServer");
@@ -99,7 +99,7 @@ bool XDTcpServer::accept()
 
 void XDTcpServer::connMessageCallBack(XDHandle handle, XDMessage &message)
 {
-    XDSocketConnection::ConnPtr conn = dispatcher_.findConnectByHandle(handle);
+    XDSocketConnectionPtr conn = dispatcher_.findConnectByHandle(handle);
     if (conn && handler_) {
         XDTcpIOEventTask *task = new XDTcpIOEventTask(XD_IOEVENTTYPE_MESSAGE);
         task->conn = conn;
@@ -112,7 +112,7 @@ void XDTcpServer::connMessageCallBack(XDHandle handle, XDMessage &message)
 
 void XDTcpServer::connDisconnectCallBack(XDHandle handle)
 {
-    XDSocketConnection::ConnPtr conn = dispatcher_.findConnectByHandle(handle);
+    XDSocketConnectionPtr conn = dispatcher_.findConnectByHandle(handle);
     if (conn && handler_) {
         XDTcpIOEventTask *task = new XDTcpIOEventTask(XD_IOEVENTTYPE_CLOSE);
         task->conn = conn;

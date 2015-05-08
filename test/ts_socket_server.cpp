@@ -12,8 +12,8 @@ void tt(int a)
 int32 main(int32 argc, char **argv)
 {
     XD_LOG_OPEN("log", 0, 3);
-    signal(SIGINT, tt);
-    signal(SIGTERM, tt);
+    //signal(SIGINT, tt);
+    //signal(SIGTERM, tt);
     XDApp app;
     XDNetService net(app);
     net.frontedListen(5000);

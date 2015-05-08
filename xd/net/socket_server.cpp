@@ -101,6 +101,7 @@ bool XDSocketServer::stop()
     serverSocketFD_.close();
     XDSocketUtil::close(recvFD_);
     XDSocketUtil::close(sendFD_);
+    return true;
 }
 
 int32 XDSocketServer::poll()
@@ -146,6 +147,7 @@ int32 XDSocketServer::poll(int32 timeout)
         doPendingTask();
     }
     stop();
+    return 0;
 }
 
 void XDSocketServer::wakeup()

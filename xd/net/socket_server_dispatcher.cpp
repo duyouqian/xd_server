@@ -99,6 +99,7 @@ bool XDSocketServerWorkThread::run()
         }
     }
     isStop_ = true;
+    return true;
 }
 
 XDSocketServerDispatcher::XDSocketServerDispatcher()
@@ -132,6 +133,7 @@ bool XDSocketServerDispatcher::init()
         workerThreads_[i].setName(name);
         workerThreads_[i].setOwner(this);
     }
+    return true;
 }
 
 bool XDSocketServerDispatcher::run()
@@ -139,4 +141,5 @@ bool XDSocketServerDispatcher::run()
     for (int32 i = 0; i < threadNum_; ++i) {
         workerThreads_[i].start();
     }
+    return true;
 }

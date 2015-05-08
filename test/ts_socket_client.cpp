@@ -1,5 +1,22 @@
 #include "log.h"
 #include "socket_util.h"
+#include "thread.h"
+#include "runnable.h"
+
+class NetThread : public XDRunnable
+{
+public:
+    NetThread(bool *isStop);
+    ~NetThread();
+    
+    bool run();
+    void send(const void *data, int32 len);
+    
+private:
+    XDThread thread_;
+    bool *isStop_;
+    XDSockFD fd_;
+};
 
 int32 main(int32 argc, char **argv)
 {

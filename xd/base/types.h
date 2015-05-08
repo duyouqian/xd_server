@@ -7,6 +7,8 @@
 #include <stdbool.h>
 // malloc
 //#include "zmalloc.h"
+// shareptr
+#include <memory>
 
 // 一些类型定义
 
@@ -32,9 +34,15 @@ typedef int32 XDPollFD;
 typedef int32 XDSockFD;
 // sock handle
 typedef int64 XDHandle;
+// session id
+typedef int64 XDSessionID;
 
 // thread
 typedef uint32 XDTID;
+
+// 只能指针
+class XDSocketConnection;
+typedef std::shared_ptr<XDSocketConnection> XDSocketConnectionPtr;
 
 // 在cpp 编译器下使用c编译
 #ifdef __cplusplus
