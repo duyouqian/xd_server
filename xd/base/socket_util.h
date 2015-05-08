@@ -46,12 +46,7 @@ FROCEINLINE uint16 networkToHost16(uint16 value)
     //return be16toh(value);
 }
 
-// socket address
-struct XDSockAddr
-{
-    char ip[32];
-    int32 port;
-};
+struct XDSockAddr;
 
 // 设置sock为堵塞模式, on : true 为非堵塞, false : 为堵塞
 // return 0 : success, -1 : failure

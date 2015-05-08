@@ -33,6 +33,9 @@ typedef int32 XDSockFD;
 // sock handle
 typedef int64 XDHandle;
 
+// thread
+typedef uint32 XDTID;
+
 // 在cpp 编译器下使用c编译
 #ifdef __cplusplus
 #define XD_BEGIN_DECLS extern "C" {
