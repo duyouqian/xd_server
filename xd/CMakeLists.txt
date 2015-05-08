@@ -4,7 +4,7 @@ FILE(GLOB_RECURSE ALL_SRC_NET_XD ${XDBASEDIR}/net/*.h ${XDBASEDIR}/net/*.cpp)
 FILE(GLOB_RECURSE ALL_SRC_SERVICE_XD ${XDBASEDIR}/service/*.h ${XDBASEDIR}/service/*.cpp)
 SOURCE_GROUP("base" FILES ${ALL_SRC_BASE_XD})
 SOURCE_GROUP("net" FILES ${ALL_SRC_NET_XD})
-SOURCE_GROUP("net" FILES ${ALL_SRC_SERVICE_XD})
+SOURCE_GROUP("service" FILES ${ALL_SRC_SERVICE_XD})
 
 IF(OS_APPLE)
     SET(SRC_BASE_XD ${ALL_SRC_BASE_XD})
@@ -23,6 +23,7 @@ IF(OS_APPLE)
                    net/socket_server_dispatcher.cpp
                    net/socket_handler.h
                    net/message.h
+                   net/message.cpp
                    net/tcp_server.h
                    net/tcp_server.cpp
                    net/tcp_server_dispatcher.h
@@ -48,6 +49,7 @@ IF(OS_LINUX)
                    net/socket_server_dispatcher.h
                    net/socket_server_dispatcher.cpp
                    net/socket_handler.h
+                   net/message.h
                    net/message.cpp
                    net/tcp_server.h
                    net/tcp_server.cpp

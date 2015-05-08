@@ -34,7 +34,7 @@ int32 XDSocketPoll::add(XDPollFD fd, XDSockFD sock, void *ud)
     }
     EV_SET(&ke, sock, EVFILT_WRITE, EV_DISABLE, 0, 0, ud);
     if (kevent(fd, &ke, 1, NULL, 0, NULL) == -1) {
-        xd_sp_del(fd, sock);
+        del(fd, sock);
         return 1;
     }
     return 0;

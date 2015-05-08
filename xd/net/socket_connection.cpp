@@ -3,6 +3,7 @@
 #include "../base/socket_util.h"
 #include "tcp_server.h"
 #include <string.h>
+#include <errno.h>
 
 XDSocketConnection::XDSocketConnection(XDTcpServer &server)
                   : XDBaseSocket::XDBaseSocket()

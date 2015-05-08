@@ -13,7 +13,9 @@ XDMutex::XDMutex()
         isValid_ = false;
     } else {
         // 开启互斥量错误检查
+#ifdef __unix__
         ret = pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_ERRORCHECK_NP);
+#endif
         ret = pthread_mutex_init(&mutex_, &attr);
         pthread_mutexattr_destroy(&attr);
         isValid_ = true;
@@ -37,6 +39,7 @@ int32 XDMutex::lock()
 
 int32 XDMutex::timedlock(uint32 millisecond)
 {
+#ifdef __unix__
     if (0 == millisecond || (uint32)(-1) == millisecond) {
         // 无限lock
         return lock();
@@ -51,6 +54,8 @@ int32 XDMutex::timedlock(uint32 millisecond)
         return -1;
     }
     return 0;
+#endif
+    return lock();
 }
 
 int32 XDMutex::unlock()

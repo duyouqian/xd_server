@@ -18,7 +18,7 @@ uint32 XDBaseThread::getCurrentThreadID()
 }
 
 XDBaseThread::XDBaseThread()
-            : pid_(-1)
+            : pid_(NULL)
             , isDetach_(false)
             , name_("Thread-user")
 {
@@ -26,7 +26,7 @@ XDBaseThread::XDBaseThread()
 }
 
 XDBaseThread::XDBaseThread(const char *name)
-            : pid_(-1)
+            : pid_(NULL)
             , isDetach_(false)
             , name_(name)
 {
@@ -41,7 +41,7 @@ XDBaseThread::~XDBaseThread()
 bool XDBaseThread::start()
 {
     int32 ret = -1;
-    if (-1 == pid_) {
+    if (NULL == pid_) {
         ret = pthread_create(&pid_, NULL, threadRunProxy, this);
     }
     return 0 == ret;
@@ -52,7 +52,7 @@ bool XDBaseThread::detach()
     if (isDetach_) {
         return false;
     }
-    if (-1 != pid_) {
+    if (NULL != pid_) {
         pthread_detach(pid_);
         isDetach_ = true;
         return true;
@@ -65,9 +65,9 @@ bool XDBaseThread::join()
     if (isDetach_) {
         return false;
     }
-    if (-1 != pid_) {
+    if (NULL != pid_) {
         pthread_join(pid_, NULL);
     }
-    pid_ = -1;
+    pid_ = NULL;
     return true;
 }

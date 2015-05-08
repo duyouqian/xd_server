@@ -1,5 +1,6 @@
 #include "timer.h"
 #include <stdio.h>
+#include <errno.h>
 
 // 获取本地时间
 struct tm* XDTimerUtil::getLocalTime(const time_t* timer, struct tm* result)

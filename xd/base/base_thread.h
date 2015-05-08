@@ -1,5 +1,5 @@
 #ifndef XD_BASE_THREAD_H
-#define XD_BASE_THRRAD_H
+#define XD_BASE_THREAD_H
 
 #include "base_object.h"
 #include <pthread.h>

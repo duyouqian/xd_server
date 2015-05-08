@@ -1,5 +1,6 @@
 #include "condition.h"
 #include "timer.h"
+#include <errno.h>
 
 XDCondition::XDCondition(XDMutex *mutex)
            : mutex_(mutex)
