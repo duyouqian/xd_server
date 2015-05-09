@@ -1,5 +1,5 @@
 #include "session.h"
-#include "socket_connection.h"
+#include "../net/socket_connection.h"
 
 XDSession::XDSession(XDSessionID id, XDSocketConnectionPtr socket)
          : id_(id)
