@@ -1,0 +1,16 @@
+import "command.proto";
+package Login;
+option java_package = "protocol";
+option java_outer_classname = "Login";
+
+// 
+message Register
+{
+    required Command.ServiceType type = 1;
+    required Command.ChannelID channel = 2 [default=Normal];
+}
+
+message RegisterResponse
+{
+    required Command.ErrorCode errorCode = 1;
+}

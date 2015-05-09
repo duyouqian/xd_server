@@ -1,0 +1,23 @@
+package DB;
+option java_package = "protocol";
+option java_outer_classname = "DB";
+
+enum ChannelType
+{
+    Invalid                         = 0x00000000;
+    Joy7                            = 0x00000011;
+}
+
+message Tbl_User
+{
+    required int64 uid = 1; // user id 64 bit
+    required int32 channel = 2; // channel
+    required uint64 registerTime = 3; // register time
+    required uint64 lastLoginTime = 4; // last login time
+    required uint32 loginTimes = 5; // login times
+    required bool isLogin = 6; // login times
+    required double money1 = 7; // login times
+    required float money2 = 8; // login times
+    required string msg = 9; // login times
+    required bytes byteMsg = 10; // login times
+}

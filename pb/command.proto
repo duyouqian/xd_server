@@ -1,0 +1,24 @@
+package Command;
+option java_package = "protocol";
+option java_outer_classname = "Command";
+
+enum ErrorCode
+{
+    Success             =   0x000000000;
+}
+
+enum ServiceType
+{
+    Login               =   0x000000001;
+}
+
+enum ChannelID
+{
+    Normal              =   0x00000001;
+}
+
+enum MessageID
+{
+    RegisterRequest     =   0x00000101;
+    RegisterResponse    =   0x00000102;
+}
