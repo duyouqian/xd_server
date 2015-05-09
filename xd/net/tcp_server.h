@@ -22,6 +22,7 @@ public:
 public:
     void connMessageCallBack(XDHandle handle, XDMessage &message);
     void connDisconnectCallBack(XDHandle handle);
+    void connSendMessageCallBack(XDHandle handle, bool enable);
 
 private:
     XDTcpServerDispatcher dispatcher_;

@@ -29,7 +29,13 @@ XDNetServerSocketEventHandler::~XDNetServerSocketEventHandler()
 void XDNetServerSocketEventHandler::onAccept(XDSocketConnectionPtr socket)
 {
     // 创建 session
-    socket->onClose();
+    //socket->onClose();
+//    int32 i = 1;
+//    while (i < 10) {
+//        XDMessage msg(i, 0, 0);
+//        socket->send(msg);
+//        ++i;
+//    }
 }
 
 void XDNetServerSocketEventHandler::onDisconnect(XDSocketConnectionPtr socket)

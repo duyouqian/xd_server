@@ -29,6 +29,7 @@ bool XDTcpSocketServerWorkThread::closeSocket(XDSockFD fd)
 bool XDTcpSocketServerWorkThread::handleSendMessage(XDSocketPoll::XDEvent *event)
 {
     XDSocketConnection *conn = (XDSocketConnection*)event->ptr;
+    conn->onSend();
     return true;
 }
 
@@ -81,17 +82,20 @@ bool XDTcpServerDispatcher::accept(XDSocketConnectionPtr newConn)
     return true;
 }
 
-bool XDTcpServerDispatcher::handleReadMessage(XDSocketPoll::XDEvent *event)
-{
-    XDTID curTid = XDBaseThread::getCurrentThreadID();
-    XD_LOG_mdebug("[TcpServer] tid:%d, myTid:%d", curTid, tid_);
-    return true;
-}
+//bool XDTcpServerDispatcher::handleReadMessage(XDSocketPoll::XDEvent *event)
+//{
+//    XDTID curTid = XDBaseThread::getCurrentThreadID();
+//    XD_LOG_mdebug("[TcpServer] tid:%d, myTid:%d", curTid, tid_);
+//    return true;
+//}
 
 
-bool XDTcpServerDispatcher::handleSendMessage(XDSocketPoll::XDEvent *event)
+bool XDTcpServerDispatcher::handleSendMessage(XDSocketConnectionPtr newConn, bool enable)
 {
-    XDSocketConnection *conn = (XDSocketConnection*)event->ptr;
+    XDSocketServerWorkThread* workThread = findWorkThreadByIndex(newConn->workThreadIndex());
+    if (workThread) {
+        workThread->setWriteable(newConn->fd(), newConn.get(), enable);
+    }
     return true;
 }
 

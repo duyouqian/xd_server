@@ -20,8 +20,8 @@ public:
     virtual bool accept();
     virtual bool accept(XDSocketConnectionPtr newConn);
     // for socket-worker thread --multi thread 需要加锁
-    virtual bool handleReadMessage(XDSocketPoll::XDEvent *event);
-    virtual bool handleSendMessage(XDSocketPoll::XDEvent *event);
+    //virtual bool handleReadMessage(XDSocketPoll::XDEvent *event);
+    virtual bool handleSendMessage(XDSocketConnectionPtr newConn, bool enable);
     virtual bool disconnect(XDHandle handle);
     virtual bool closeSocket(XDHandle handle);
 

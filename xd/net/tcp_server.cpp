@@ -122,3 +122,11 @@ void XDTcpServer::connDisconnectCallBack(XDHandle handle)
     }
     dispatcher_.closeSocket(handle);
 }
+
+void XDTcpServer::connSendMessageCallBack(XDHandle handle, bool enable)
+{
+    XDSocketConnectionPtr conn = dispatcher_.findConnectByHandle(handle);
+    if (conn) {
+        dispatcher_.handleSendMessage(conn, enable);
+    }
+}

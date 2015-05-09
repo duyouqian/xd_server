@@ -1,6 +1,7 @@
 #include "socket_connection.h"
 #include "../base/log.h"
 #include "../base/socket_util.h"
+#include "../base/guard_mutex.h"
 #include "tcp_server.h"
 #include <string.h>
 #include <errno.h>
@@ -11,6 +12,8 @@ XDSocketConnection::XDSocketConnection(XDTcpServer &server)
                   , readBufWritePos_(NULL)
                   , toRead_(0)
                   , readHandle_(NULL)
+                  , curSendMessage_(NULL)
+                  , curSendPos_(0)
 {
     nextReadStep(messageHeader_, XDMESSAGE_HEADER_SIZE,
                  &XDSocketConnection::handleReadMessageHeader);
@@ -82,7 +85,7 @@ int32 XDSocketConnection::processReadBuffer()
             if (errno == EINTR) {
                 continue;
             }
-            if (errno == EAGAIN) {
+            if (errno == EAGAIN || errno == EWOULDBLOCK) {
                 // 已经到末尾了
                 return -1;
             }
@@ -138,5 +141,70 @@ bool XDSocketConnection::handleReadMessagePayload()
     //((XDNetService*)server_)->processMessage(this, message_);
     message_.reset();
     nextReadStep(messageHeader_, XDMESSAGE_HEADER_SIZE, &XDSocketConnection::handleReadMessageHeader);
+    return true;
+}
+
+bool XDSocketConnection::send(XDMessage &message)
+{
+    if (state_ != ST_CONNECTED) {
+        return false;
+    }
+    if (message.header().flags & XDMESSAGE_FLAG_INVALID) {
+        return false;
+    }
+    {
+        XDGuardMutex lock(&sendMutex_);
+        sendMessageQueue_.push_back(message);
+    }
+    server_.connSendMessageCallBack(handle_, true);
+    return true;
+}
+
+void XDSocketConnection::onSend()
+{
+    if (NULL == curSendMessage_ ||
+        curSendPos_ == curSendMessage_->size()) {
+        bool ret = getNextSendMessageByQueue();
+        if (!ret) {
+            // 没有消息
+            server_.connSendMessageCallBack(handle_, false);
+            return;
+        }
+    }
+    // send
+    int32 ret = XDBaseSocket::send(curSendMessage_->data() + curSendPos_, curSendMessage_->size() - curSendPos_);
+    if (0 == ret) {
+        // close
+        server_.connDisconnectCallBack(handle_);
+    } else if (ret < 0) {
+        XD_LOG_merror("[XDSocketConnection] [Handle:%d fd:%d] Send error:%s",
+                      handle_, fd_, strerror(errno));
+        if (errno == EAGAIN || errno == EINTR || errno == EWOULDBLOCK) {
+            
+        } else {
+            server_.connDisconnectCallBack(handle_);
+        }
+    } else {
+        curSendPos_ += ret;
+        if (curSendPos_ == curSendMessage_->size()) {
+            {
+                XDGuardMutex lock(&sendMutex_);
+                sendMessageQueue_.pop_front();
+                curSendMessage_ = NULL;
+                curSendPos_ = 0;
+            }
+            
+        }
+    }
+}
+
+bool XDSocketConnection::getNextSendMessageByQueue()
+{
+    XDGuardMutex lock(&sendMutex_);
+    if (sendMessageQueue_.empty()) {
+        return false;
+    }
+    curSendMessage_ = &sendMessageQueue_.front();
+    curSendPos_ = 0;
     return true;
 }

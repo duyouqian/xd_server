@@ -23,6 +23,7 @@ public:
     bool start();
     bool run();
     bool acceptNewConnect(XDSockFD fd, void *ud);
+    bool setWriteable(XDSockFD fd, void *ud, bool enable);
 
     virtual bool handleReadMessage(XDSocketPoll::XDEvent *event);
     virtual bool handleSendMessage(XDSocketPoll::XDEvent *event);
@@ -49,10 +50,12 @@ public:
     // for socket-server thread --singleton thread
     virtual bool accept() = 0;
     // for socket-worker thread --multi thread 需要加锁
-    virtual bool handleReadMessage(XDSocketPoll::XDEvent *event) = 0;
-    virtual bool handleSendMessage(XDSocketPoll::XDEvent *event) = 0;
+    //virtual bool handleReadMessage(XDSocketPoll::XDEvent *event) = 0;
+    //virtual bool handleSendMessage(XDSocketPoll::XDEvent *event) = 0;
     virtual bool disconnect(XDHandle handle) = 0;
     virtual bool closeSocket(XDHandle handle) = 0;
+    
+    XDSocketServerWorkThread* findWorkThreadByIndex(int32 index) const;
 
 protected:
     int32 threadNum_;

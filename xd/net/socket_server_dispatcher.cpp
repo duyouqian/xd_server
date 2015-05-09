@@ -58,6 +58,11 @@ bool XDSocketServerWorkThread::acceptNewConnect(XDSockFD fd, void *ud)
     return true;
 }
 
+bool XDSocketServerWorkThread::setWriteable(XDSockFD fd, void *ud, bool enable)
+{
+    XDSocketPoll::write(pollFD_, fd, ud, enable);
+}
+
 bool XDSocketServerWorkThread::handleReadMessage(XDSocketPoll::XDEvent *event)
 {
     return false;
@@ -104,6 +109,7 @@ bool XDSocketServerWorkThread::run()
 
 XDSocketServerDispatcher::XDSocketServerDispatcher()
                         : threadNum_(XD_DEFAULT_SOCKET_WORKER_THREAD_NUM)
+                        , workerThreads_(NULL)
                         , workerIndex_(0)
                         , tid_(XDBaseThread::getCurrentThreadID())
 {
@@ -111,6 +117,7 @@ XDSocketServerDispatcher::XDSocketServerDispatcher()
 
 XDSocketServerDispatcher::XDSocketServerDispatcher(int32 threadNum)
                         : threadNum_(threadNum > 0 ? threadNum : 1)
+                        , workerThreads_(NULL)
                         , workerIndex_(0)
                         , tid_(XDBaseThread::getCurrentThreadID())
 {
@@ -142,4 +149,12 @@ bool XDSocketServerDispatcher::run()
         workerThreads_[i].start();
     }
     return true;
+}
+
+XDSocketServerWorkThread* XDSocketServerDispatcher::findWorkThreadByIndex(int32 index) const
+{
+    if (index < 0 || index >= workerIndex_) {
+        return NULL;
+    }
+    return &workerThreads_[index];
 }

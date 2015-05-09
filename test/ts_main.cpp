@@ -42,14 +42,18 @@ public:
     explicit Obj5(int32 id) : ID_(id) { }
     Obj5(const Obj5 &v) : ID_(v.ID_)
     {
-
+        printf("coyp Obj5 \n");
     }
     ~Obj5()
     {
-        //printf("[Obj5] delete\n");
-        XD_LOG_mdebug("[Obj5] delete");
+        //ID_ = 0;
+        printf("[Obj5] delete\n");
+        //XD_LOG_mdebug("[Obj5] delete");
     }
-    int32 getID() { return ID_; }
+    int32 getID()
+    {
+        return ID_;
+    }
 private:
     int32 ID_;
 };
@@ -109,6 +113,11 @@ private:
     void *ptr_;
 };
 
+class Obj10
+{
+    
+};
+
 void fun1(Obj5 &obj)
 {
     XD_LOG_mdebug("[FUN1] Obj4::ID=%d", obj.getID());
@@ -141,12 +150,12 @@ int32 main(int32 argc, char **argv)
     
     std::function<void()> fun;
 
-    {
-        Obj5 t5(10);
-        fun = std::bind(fun1, t5);
-    }
-
-    fun();
+//    {
+//        Obj5 t5(10);
+//        fun = std::bind(fun1, t5);
+//    }
+//
+//    fun();
 
     {
         Obj6 *t6 = new Obj6();
@@ -162,6 +171,12 @@ int32 main(int32 argc, char **argv)
     Obj7 t7;
     Obj8 t8(&t7);
     t8.exec();
+    
+    Obj5 t11(12);
+    std::deque<Obj5> d1;
+    d1.push_back(t11);
+    Obj5* t12 = &d1.front();
+    d1.pop_front();
 
     XD_LOG_CLOSE();
     return 0;
