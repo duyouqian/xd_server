@@ -1,5 +1,9 @@
 #include "net_service.h"
 #include "../net/socket_handler.h"
+#include "../net/socket_connecter.h"
+
+// test
+#include "../net/socket_poll.h"
 
 class XDNetServerSocketEventHandler : public XDTcpServerSocketEventHandler
 {
@@ -65,17 +69,28 @@ bool XDNetService::start()
     if (frontedTcpServer_.start()) {
         frontedTcpServer_.poll();
     }
-    return true;
+    return false;
 }
 
 void XDNetService::afterStart()
 {
-
+    
 }
 
 void XDNetService::stop()
 {
+    
+}
 
+XDSocketConnecterPtr XDNetService::rpcConnect(const char *host, int32 port, XDTcpClientSocketEventHandler *handler, bool isReconnect, int32 maxReconnectAttempts)
+{
+    XDSocketConnecterPtr conn(new XDSocketConnecter());
+    bool ret = conn->connect(host, port, handler, isReconnect, maxReconnectAttempts);
+    if (ret) {
+        //frontedTcpServer_.
+        XDSocketPoll::add(frontedTcpServer_.pollFD(), conn->fd(), conn.get());
+    }
+    return conn;
 }
 
 void XDNetService::frontedListen(int32 port)

@@ -58,6 +58,7 @@ public:
     void queueInLoop(const XDFunction &cb);
 
     XDHandle handle() const { return handle_; }
+    XDPollFD pollFD() const { return pollFD_; }
 
 protected:
     void doPendingFunctors();

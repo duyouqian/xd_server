@@ -70,7 +70,7 @@ bool XDTcpServer::start()
 bool XDTcpServer::accept()
 {
     XD_LOG_mdebug("[TcpServer] serverName:%s 有新连接", "TcpServer");
-    XDSocketConnectionPtr conn(new XDSocketConnection(*this));
+    XDSocketConnectionPtr conn(new XDSocketConnection(this));
     XDSockFD connFD = serverSocketFD_.accept(conn->addressPtr());
     if (-1 == connFD) {
         XD_LOG_mdebug("[TcpServer] serverName:%s accept 失败", "TcpServer");

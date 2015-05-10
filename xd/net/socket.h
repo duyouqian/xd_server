@@ -15,6 +15,7 @@ protected:
     enum XDSocketState
     {
         ST_INIT,
+        ST_CONNECTING,
         ST_CONNECTED,
         ST_HALFCLOSE,
         ST_CLOSED
@@ -37,6 +38,11 @@ public:
     XDHandle handle() const { return handle_; }
     XDSocketUtil::XDSockAddr& address() { return addr_; }
     XDSocketUtil::XDSockAddr* addressPtr() { return &addr_; }
+    
+protected:
+    virtual void connMessageCallBack() { }
+    virtual void connDisconnectCallBack() { }
+    virtual void connSendMessageCallBack(bool enable) { }
 
 protected:
     XDSockFD fd_;

@@ -11,7 +11,8 @@ class XDTcpServer;
 class XDSocketConnection : public XDBaseSocket
 {
 public:
-    XDSocketConnection(XDTcpServer &server);
+    XDSocketConnection();
+    XDSocketConnection(XDTcpServer *server);
     ~XDSocketConnection();
 
     virtual bool create();
@@ -41,9 +42,14 @@ protected:
     
     // send
     bool getNextSendMessageByQueue();
+    
+protected:
+    virtual void connMessageCallBack();
+    virtual void connDisconnectCallBack();
+    virtual void connSendMessageCallBack(bool enable);
 
 protected:
-    XDTcpServer &server_;
+    XDTcpServer *server_;
     int32 workThreadIndex_;
     
     // read

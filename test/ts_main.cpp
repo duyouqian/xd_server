@@ -4,6 +4,8 @@
 #include "atomic_counter.h"
 #include "socket_util.h"
 #include "refcount.h"
+#include "rpc_message.h"
+#include "rpc_method.h"
 #include <deque>
 #include <functional>
 #include <string>
@@ -123,6 +125,11 @@ void fun1(Obj5 &obj)
     XD_LOG_mdebug("[FUN1] Obj4::ID=%d", obj.getID());
 }
 
+void Login(XDMessage &message)
+{
+    
+}
+
 int32 main(int32 argc, char **argv)
 {
     XD_LOG_OPEN("log", 0, 3);
@@ -177,6 +184,17 @@ int32 main(int32 argc, char **argv)
     d1.push_back(t11);
     Obj5* t12 = &d1.front();
     d1.pop_front();
+    
+    XDMessage message;
+    std::deque<XDMessage> d2;
+    d2.push_back(message);
+    
+    XDRpcMethod::getInstance().registerMethod(1, 1, Login);
+    XDRpcMethod::getInstance().registerMethod(1, 1, Login);
+    XDRpcMethod::getInstance().registerMethod(1, 2, Login);
+    
+    XDRpcMethod::getInstance().processMethod(1, 2, message);
+    XDRpcMethod::getInstance().processMethod(1, 3, message);
 
     XD_LOG_CLOSE();
     return 0;

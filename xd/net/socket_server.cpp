@@ -118,7 +118,7 @@ int32 XDSocketServer::poll(int32 timeout)
     int32 num;
     int32 i;
     while (!isStop_) {
-        num = XDSocketPoll::wait(pollFD_, event, 128);
+        num = XDSocketPoll::wait(pollFD_, event, 128, timeout);
         if (-1 == num) {
             if (EINTR == errno) {
                 goto exceFunc;

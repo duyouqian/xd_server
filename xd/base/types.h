@@ -40,10 +40,12 @@ typedef int64 XDSessionID;
 // thread
 typedef uint32 XDTID;
 
-// 只能指针
+// 智能指针
 // server socket ptr
 class XDSocketConnection;
 typedef std::shared_ptr<XDSocketConnection> XDSocketConnectionPtr;
+class XDSocketConnecter;
+typedef std::shared_ptr<XDSocketConnecter> XDSocketConnecterPtr;
 // session ptr
 class XDSession;
 typedef std::shared_ptr<XDSession> XDSessionPtr;

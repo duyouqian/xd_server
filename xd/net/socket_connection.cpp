@@ -6,7 +6,19 @@
 #include <string.h>
 #include <errno.h>
 
-XDSocketConnection::XDSocketConnection(XDTcpServer &server)
+XDSocketConnection::XDSocketConnection()
+: XDBaseSocket::XDBaseSocket()
+, server_(NULL)
+, readBufWritePos_(NULL)
+, toRead_(0)
+, readHandle_(NULL)
+, curSendMessage_(NULL)
+, curSendPos_(0)
+{
+    
+}
+
+XDSocketConnection::XDSocketConnection(XDTcpServer *server)
                   : XDBaseSocket::XDBaseSocket()
                   , server_(server)
                   , readBufWritePos_(NULL)
@@ -36,7 +48,8 @@ bool XDSocketConnection::create()
 // close
 void XDSocketConnection::onClose()
 {
-    server_.connDisconnectCallBack(handle_);
+    connDisconnectCallBack();
+    //server_.connDisconnectCallBack(handle_);
 }
 
 void XDSocketConnection::nextReadStep(char *buf,
@@ -98,7 +111,8 @@ int32 XDSocketConnection::processReadBuffer()
             // close
             XD_LOG_merror("[XDSocketConnection] [Handle:%d fd:%d] close",
                           handle_, fd_);
-            server_.connDisconnectCallBack(handle_);
+            connDisconnectCallBack();
+            //server_.connDisconnectCallBack(handle_);
             return 0;
         }
         toRead_ -= readNum;
@@ -147,7 +161,8 @@ bool XDSocketConnection::handleReadMessagePayload()
         message_.methodID(XDSocketUtil::networkToHost32(message_.methodID()));
     }
     // process message
-    server_.connMessageCallBack(handle_, message_);
+    connMessageCallBack();
+    //server_.connMessageCallBack(handle_, message_);
     //((XDNetService*)server_)->processMessage(this, message_);
     message_.reset();
     nextReadStep(messageHeader_, XDMESSAGE_HEADER_SIZE, &XDSocketConnection::handleReadMessageHeader);
@@ -166,7 +181,8 @@ bool XDSocketConnection::send(XDMessage &message)
         XDGuardMutex lock(&sendMutex_);
         sendMessageQueue_.push_back(message);
     }
-    server_.connSendMessageCallBack(handle_, true);
+    connSendMessageCallBack(true);
+    //server_.connSendMessageCallBack(handle_, true);
     return true;
 }
 
@@ -177,7 +193,8 @@ void XDSocketConnection::onSend()
         bool ret = getNextSendMessageByQueue();
         if (!ret) {
             // 没有消息
-            server_.connSendMessageCallBack(handle_, false);
+            connSendMessageCallBack(false);
+            //server_.connSendMessageCallBack(handle_, false);
             return;
         }
     }
@@ -185,14 +202,16 @@ void XDSocketConnection::onSend()
     int32 ret = XDBaseSocket::send(curSendMessage_->data() + curSendPos_, curSendMessage_->size() - curSendPos_);
     if (0 == ret) {
         // close
-        server_.connDisconnectCallBack(handle_);
+        //server_.connDisconnectCallBack(handle_);
+        connDisconnectCallBack();
     } else if (ret < 0) {
         XD_LOG_merror("[XDSocketConnection] [Handle:%d fd:%d] Send error:%s",
                       handle_, fd_, strerror(errno));
         if (errno == EAGAIN || errno == EINTR || errno == EWOULDBLOCK) {
             
         } else {
-            server_.connDisconnectCallBack(handle_);
+            //server_.connDisconnectCallBack(handle_);
+            connDisconnectCallBack();
         }
     } else {
         curSendPos_ += ret;
@@ -217,4 +236,25 @@ bool XDSocketConnection::getNextSendMessageByQueue()
     curSendMessage_ = &sendMessageQueue_.front();
     curSendPos_ = 0;
     return true;
+}
+
+void XDSocketConnection::connMessageCallBack()
+{
+    if (server_) {
+        server_->connMessageCallBack(handle_, message_);
+    }
+}
+
+void XDSocketConnection::connDisconnectCallBack()
+{
+    if (server_) {
+        server_->connDisconnectCallBack(handle_);
+    }
+}
+
+void XDSocketConnection::connSendMessageCallBack(bool enable)
+{
+    if (server_) {
+        server_->connSendMessageCallBack(handle_, enable);
+    }
 }

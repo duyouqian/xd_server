@@ -1,4 +1,5 @@
 #include "socket_poll.h"
+#include "../base/timer.h"
 
 #include <netdb.h>
 #include <unistd.h>
@@ -71,5 +72,24 @@ int32 XDSocketPoll::wait(XDPollFD fd, XDEvent *e, int32 max)
         e[i].read = (filter == EVFILT_READ);
     }
 
+    return n;
+}
+
+int32 XDSocketPoll::wait(XDPollFD fd, XDEvent *e, int32 max, int32 millisecond)
+{
+    struct kevent ev[max];
+    struct timespec ts;
+    XDTimerUtil::getAbsTimespec(&ts, millisecond);
+    int n = kevent(fd, NULL, 0, ev, max, -1 == millisecond ? NULL : &ts);
+    
+    int i;
+    for (i = 0; i < n; ++i) {
+        struct kevent eeee = ev[i];
+        e[i].ptr = ev[i].udata;
+        unsigned filter = ev[i].filter;
+        e[i].write = (filter == EVFILT_WRITE);
+        e[i].read = (filter == EVFILT_READ);
+    }
+    
     return n;
 }

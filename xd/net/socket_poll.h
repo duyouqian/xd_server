@@ -37,6 +37,9 @@ void write(XDPollFD fd, XDSockFD sock, void *ud, bool enable);
 // 等待
 int32 wait(XDPollFD fd, XDEvent *e, int32 max);
 
+// 等待超时
+int32 wait(XDPollFD fd, XDEvent *e, int32 max, int32 millisecond);
+
 }
 
 #endif // end xd_socket_poll_h

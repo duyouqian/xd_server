@@ -8,6 +8,7 @@
 
 class XDApp;
 class XDTcpServerSocketEventHandler;
+class XDTcpClientSocketEventHandler;
 
 class XDNetService : public XDBaseService
 {
@@ -22,7 +23,10 @@ public:
     // 前端服务器监听
     void frontedListen(int32 port);
     // 后端RPC服务器监听
-    void backendListen(int32 port);
+    void backendRpcListen(int32 port);
+    
+    // 连接rpc服务器
+    XDSocketConnecterPtr rpcConnect(const char *host, int32 port, XDTcpClientSocketEventHandler *handler, bool isReconnect = true, int32 maxReconnectAttempts = -1);
 
 protected:
     XDTcpServer frontedTcpServer_;
