@@ -1,0 +1,7 @@
+# 添加头文件
+INCLUDE_DIRECTORIES(../xd/)
+INCLUDE_DIRECTORIES(../xd/base/)
+INCLUDE_DIRECTORIES(../xd/net/)
+INCLUDE_DIRECTORIES(../xd/service/)
+# master
+ADD_SUBDIRECTORY(master)

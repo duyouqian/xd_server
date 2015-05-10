@@ -1,0 +1,19 @@
+package RPC;
+option java_package = "protocol";
+option java_outer_classname = "RPC";
+
+enum ServerID
+{
+  MASTER        = 0x00000001;
+}
+
+enum MethodID
+{
+  RegisterServer = 0x00000001;
+}
+
+message RpcHeader
+{
+  required ServerID server = 1;
+  required MethodID method = 2;
+}

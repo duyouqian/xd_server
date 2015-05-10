@@ -43,6 +43,8 @@ ADD_SUBDIRECTORY(3rd)
 # pb
 ADD_SUBDIRECTORY(pb)
 # 应用
+# 服务器
+ADD_SUBDIRECTORY(servers)
 # cpp服务
 #ADD_SUBDIRECTORY(service)
 # 测试
