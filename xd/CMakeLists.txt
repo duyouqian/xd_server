@@ -17,6 +17,8 @@ IF(OS_APPLE)
                    net/socket_acceptor.cpp
                    net/socket_connection.h
                    net/socket_connection.cpp
+                   net/socket_connecter.h
+                   net/socket_connecter.cpp
                    net/socket_server.h
                    net/socket_server.cpp
                    net/socket_server_dispatcher.h
@@ -24,6 +26,10 @@ IF(OS_APPLE)
                    net/socket_handler.h
                    net/message.h
                    net/message.cpp
+                   net/rpc_message.h
+                   net/rpc_message.cpp
+                   net/rpc_method.h
+                   net/rpc_method.cpp
                    net/tcp_server.h
                    net/tcp_server.cpp
                    net/tcp_server_dispatcher.h
@@ -44,6 +50,8 @@ IF(OS_LINUX)
                    net/socket_acceptor.cpp
                    net/socket_connection.h
                    net/socket_connection.cpp
+                   net/socket_connecter.h
+                   net/socket_connecter.cpp
                    net/socket_server.h
                    net/socket_server.cpp
                    net/socket_server_dispatcher.h
@@ -51,6 +59,10 @@ IF(OS_LINUX)
                    net/socket_handler.h
                    net/message.h
                    net/message.cpp
+                   net/rpc_message.h
+                   net/rpc_message.cpp
+                   net/rpc_method.h
+                   net/rpc_method.cpp
                    net/tcp_server.h
                    net/tcp_server.cpp
                    net/tcp_server_dispatcher.h

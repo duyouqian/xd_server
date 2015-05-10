@@ -80,12 +80,16 @@ int32 XDSocketConnection::processReadBuffer()
         int32 readNum = XDBaseSocket::read(readBufWritePos_, toRead_);
         if (-1 == readNum) {
             // EINTR, EAGAIN
-            XD_LOG_merror("[XDSocketConnection] [Handle:%d fd:%d] Read error:%s",
-                          handle_, fd_, strerror(errno));
+            XD_LOG_merror("[XDSocketConnection] [Handle:%d fd:%d] Read errno:%d error:%s",
+                          handle_, fd_, errno, strerror(errno));
             if (errno == EINTR) {
                 continue;
             }
-            if (errno == EAGAIN || errno == EWOULDBLOCK) {
+            if (errno == EAGAIN) {
+                // 已经到末尾了
+                return -1;
+            }
+            if (errno == EWOULDBLOCK) {
                 // 已经到末尾了
                 return -1;
             }
@@ -130,11 +134,17 @@ EXIT0:
 
 bool XDSocketConnection::handleReadMessagePayload()
 {
-    if (message_.sessionID()) {
+    if (message_.sessionIDPtr()) {
         message_.sessionID(XDSocketUtil::networkToHost64(message_.sessionID()));
     }
-    if (message_.replyID()) {
+    if (message_.replyIDPtr()) {
         message_.replyID(XDSocketUtil::networkToHost64(message_.replyID()));
+    }
+    if (message_.serverIDPtr()) {
+        message_.serverID(XDSocketUtil::networkToHost32(message_.serverID()));
+    }
+    if (message_.methodDPtr()) {
+        message_.methodID(XDSocketUtil::networkToHost32(message_.methodID()));
     }
     // process message
     server_.connMessageCallBack(handle_, message_);

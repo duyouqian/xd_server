@@ -73,6 +73,12 @@ uint32 XDMessage::optionalHeaderSize(uint16 flags)
     if (flags & XDMESSAGE_FLAG_HASRELPID) {
         size += (uint32)(sizeof(uint64));
     }
+    if (flags & XDMESSAGE_FLAG_HASSERVERID) {
+        size += (uint32)(sizeof(uint32));
+    }
+    if (flags & XDMESSAGE_FLAG_HASMETHODID) {
+        size += (uint32)(sizeof(uint32));
+    }
     return size;
 }
 
@@ -96,6 +102,12 @@ bool XDMessage::init(uint32 cmdID, uint16 flags, uint32 bodySize)
     if (replyID_) {
         *replyID_ = 0;
     }
+    if (serverID_) {
+        *serverID_ = 0;
+    }
+    if (methodID_) {
+        *methodID_ = 0;
+    }
     return true;
 }
 
@@ -104,6 +116,8 @@ void XDMessage::reset()
     buf_ = data_;
     sessionID_ = NULL;
     replyID_ = NULL;
+    serverID_ = NULL;
+    methodID_ = NULL;
     isHostEndian_ = true;
 }
 
@@ -119,7 +133,7 @@ char* XDMessage::body() const
 
 uint32 XDMessage::size() const
 {
-    return sizeof(XDHeader) + optionalHeaderSize(header().flags) + (isHostEndian_ ? header().bodySize : XDSocketUtil::networkToHost32(header().bodySize));
+    return sizeof(XDHeader) + optionalHeaderSize(isHostEndian_ ? header().flags : XDSocketUtil::networkToHost16(header().flags)) + (isHostEndian_ ? header().bodySize : XDSocketUtil::networkToHost32(header().bodySize));
 }
 
 void XDMessage::initOptionalHeader()
@@ -133,6 +147,14 @@ void XDMessage::initOptionalHeader()
     if (header().flags & XDMESSAGE_FLAG_HASRELPID) {
         replyID_ = reinterpret_cast<uint64*>(payload);
         offset += sizeof(uint64);
+    }
+    if (header().flags & XDMESSAGE_FLAG_HASSERVERID) {
+        serverID_ = reinterpret_cast<uint32*>(payload);
+        offset += sizeof(uint32);
+    }
+    if (header().flags & XDMESSAGE_FLAG_HASMETHODID) {
+        methodID_ = reinterpret_cast<uint32*>(payload);
+        offset += sizeof(uint32);
     }
 }
 

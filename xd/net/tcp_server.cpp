@@ -1,7 +1,7 @@
 #include "tcp_server.h"
 #include "socket_connection.h"
 #include "socket_poll.h"
-#include "message.h"
+#include "rpc_message.h"
 #include "socket_handler.h"
 #include "../base/log.h"
 #include <functional>
@@ -76,6 +76,8 @@ bool XDTcpServer::accept()
         XD_LOG_mdebug("[TcpServer] serverName:%s accept 失败", "TcpServer");
         return false;
     }
+    // 设置为非堵塞IO
+    XDSocketUtil::setSocketNonblock(connFD, true);
     conn->setFD(connFD);
     if (!conn->create()) {
         XD_LOG_mdebug("[TcpServer] serverName:%s connection create 失败 [handle:%d fd:%d]", "TcpServer", conn->handle(), connFD);

@@ -11,6 +11,8 @@
 
 #define XDMESSAGE_FLAG_HASSESSIONID     0x0001
 #define XDMESSAGE_FLAG_HASRELPID        0x0002
+#define XDMESSAGE_FLAG_HASSERVERID      0x0004 // for rpc
+#define XDMESSAGE_FLAG_HASMETHODID      0x0008 // for rpc
 #define XDMESSAGE_FLAG_INVALID          0x8000
 
 class XDMessage
@@ -31,8 +33,8 @@ public:
     XDMessage(const XDMessage& other);
     virtual ~XDMessage();
 
-    bool init(uint32 cmdID, uint16 flags, uint32 bodySize);
-    void reset();
+    virtual bool init(uint32 cmdID, uint16 flags, uint32 bodySize);
+    virtual void reset();
     void copy(const XDMessage& other);
     void operator=(const XDMessage& other);
 
@@ -45,6 +47,16 @@ public:
     uint64 replyID() { return replyID_ ? *replyID_ : 0; }
     uint64 replyID() const { return replyID_ ? *replyID_ : 0; }
     void replyID(uint64 value) { if (replyID_) *replyID_ = value; }
+    
+    uint32* serverIDPtr() { return serverID_; }
+    uint32 serverID() { return serverID_ ? *serverID_ : 0; }
+    uint32 serverID() const { return serverID_ ? *serverID_ : 0; }
+    void serverID(uint32 value) { if (serverID_) *serverID_ = value; }
+    
+    uint32* methodDPtr() { return methodID_; }
+    uint32 methodID() { return methodID_ ? *methodID_ : 0; }
+    uint32 methodID() const { return methodID_ ? *methodID_ : 0; }
+    void methodID(uint32 value) { if (methodID_) *methodID_ = value; }
 
     XDHeader& header() { return *reinterpret_cast<XDHeader*>(buf_); }
     XDHeader& header() const { return *reinterpret_cast<XDHeader*>(buf_); }
@@ -60,7 +72,7 @@ public:
     static uint32 optionalHeaderSize(uint16 flags);
 
 protected:
-    void initOptionalHeader();
+    virtual void initOptionalHeader();
     bool allocateBuf(uint32 size);
 
 protected:
@@ -68,6 +80,8 @@ protected:
     char data_[XDMESSAGE_MIN_SIZE];
     uint64 *sessionID_;
     uint64 *replyID_;
+    uint32 *serverID_;
+    uint32 *methodID_;
     bool isHostEndian_;
 };
 
