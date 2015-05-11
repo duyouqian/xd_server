@@ -37,6 +37,13 @@ typedef int64 XDHandle;
 // session id
 typedef int64 XDSessionID;
 
+typedef enum XDSocketType
+{
+    SOCKETTYPE_ACCEPTOR,
+    SOCKETTYPE_CONNECTION,
+    SOCKETTYPE_CONNECTER
+} XDSocketType;
+
 // thread
 typedef uint32 XDTID;
 

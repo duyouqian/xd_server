@@ -57,3 +57,18 @@ int32 XDSocketPoll::wait(XDPollFD fd, XDEvent *e, int32 max)
 
     return n;
 }
+
+int32 XDSocketPoll::wait(XDPollFD fd, XDEvent *e, int32 max, int32 millisecond)
+{
+    struct epoll_event ev[max];
+    int n = epoll_wait(fd , ev, max, millisecond);
+    int i;
+    for (i = 0; i < n; ++i) {
+        e[i].ptr = ev[i].data.ptr;
+        uint32 flag = ev[i].events;
+        e[i].write = (flag & EPOLLOUT) != 0;
+        e[i].read = (flag & EPOLLIN) != 0;
+    }
+
+    return n;
+}

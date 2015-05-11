@@ -10,3 +10,16 @@ XDApp::~XDApp()
 {
 
 }
+
+void XDApp::run()
+{
+    while (!isStopped_) {
+        ioService_.run();
+    }
+}
+
+void XDApp::stop()
+{
+    isStopped_ = true;
+    ioService_.wakeup();
+}

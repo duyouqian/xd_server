@@ -6,21 +6,19 @@
 #include <string.h>
 #include <errno.h>
 
-XDSocketConnection::XDSocketConnection()
-: XDBaseSocket::XDBaseSocket()
-, server_(NULL)
-, readBufWritePos_(NULL)
-, toRead_(0)
-, readHandle_(NULL)
-, curSendMessage_(NULL)
-, curSendPos_(0)
+XDSocketConnection::XDSocketConnection(XDSocketServer *socketServer, XDSocketType type)
+                  : XDBaseSocket::XDBaseSocket(socketServer, type)
+                  , readBufWritePos_(NULL)
+                  , toRead_(0)
+                  , readHandle_(NULL)
+                  , curSendMessage_(NULL)
+                  , curSendPos_(0)
 {
     
 }
 
-XDSocketConnection::XDSocketConnection(XDTcpServer *server)
-                  : XDBaseSocket::XDBaseSocket()
-                  , server_(server)
+XDSocketConnection::XDSocketConnection(XDSocketServer *socketServer)
+                  : XDBaseSocket::XDBaseSocket(socketServer, XDSocketType::SOCKETTYPE_CONNECTION)
                   , readBufWritePos_(NULL)
                   , toRead_(0)
                   , readHandle_(NULL)
@@ -240,21 +238,21 @@ bool XDSocketConnection::getNextSendMessageByQueue()
 
 void XDSocketConnection::connMessageCallBack()
 {
-    if (server_) {
-        server_->connMessageCallBack(handle_, message_);
+    if (socketServer_) {
+        socketServer_->connMessageCallBack(handle_, message_);
     }
 }
 
 void XDSocketConnection::connDisconnectCallBack()
 {
-    if (server_) {
-        server_->connDisconnectCallBack(handle_);
+    if (socketServer_) {
+        socketServer_->connDisconnectCallBack(handle_);
     }
 }
 
 void XDSocketConnection::connSendMessageCallBack(bool enable)
 {
-    if (server_) {
-        server_->connSendMessageCallBack(handle_, enable);
+    if (socketServer_) {
+        socketServer_->connSendMessageCallBack(handle_, enable);
     }
 }

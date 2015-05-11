@@ -1,23 +1,24 @@
 #include "socket_acceptor.h"
+#include "tcp_server.h"
 #include "../base/socket_util.h"
 #include "../base/log.h"
 #include <stdio.h>
 
-XDSocketAccept::XDSocketAccept()
-              : XDBaseSocket::XDBaseSocket()
+XDSocketAccept::XDSocketAccept(XDSocketServer *socketServer)
+              : XDBaseSocket::XDBaseSocket(socketServer, XDSocketType::SOCKETTYPE_ACCEPTOR)
 {
 
 }
 
-XDSocketAccept::XDSocketAccept(const char *ip, int32 port)
-               : XDBaseSocket::XDBaseSocket()
+XDSocketAccept::XDSocketAccept(XDSocketServer *socketServer, const char *ip, int32 port)
+               : XDBaseSocket::XDBaseSocket(socketServer, XDSocketType::SOCKETTYPE_ACCEPTOR)
 {
     snprintf(addr_.ip, sizeof(addr_.ip), "%s", ip);
     addr_.port = port;
 }
 
-XDSocketAccept::XDSocketAccept(int32 port)
-              : XDBaseSocket::XDBaseSocket()
+XDSocketAccept::XDSocketAccept(XDSocketServer *socketServer, int32 port)
+              : XDBaseSocket::XDBaseSocket(socketServer, XDSocketType::SOCKETTYPE_ACCEPTOR)
 {
     snprintf(addr_.ip, sizeof(addr_.ip), "%s", "0.0.0.0");
     addr_.port = port;
@@ -68,4 +69,9 @@ XDSockFD XDSocketAccept::accept(XDSocketUtil::XDSockAddr *addr)
     }
     XDSockFD connFD = XDSocketUtil::accept(fd_, addr);
     return connFD;
+}
+
+void XDSocketAccept::accept()
+{
+    socketServer_->accept();
 }

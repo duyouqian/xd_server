@@ -8,15 +8,16 @@
 class XDSocketAccept : public XDBaseSocket
 {
 public:
-    XDSocketAccept();
-    explicit XDSocketAccept(const char *ip, int32 port);
-    explicit XDSocketAccept(int32 port);
+    XDSocketAccept(XDSocketServer *socketServer);
+    explicit XDSocketAccept(XDSocketServer *socketServer, const char *ip, int32 port);
+    explicit XDSocketAccept(XDSocketServer *socketServer, int32 port);
     ~XDSocketAccept();
     virtual bool create();
 
     bool init(const char *ip, int32 port);
     bool init(int32 port);
     XDSockFD accept(XDSocketUtil::XDSockAddr *addr);
+    void accept();
 };
 
 

@@ -3,8 +3,6 @@
 
 #include "socket_connection.h"
 
-class XDNetService;
-
 class XDTcpClientSocketEventHandler;
 
 class XDSocketConnecter : public XDSocketConnection

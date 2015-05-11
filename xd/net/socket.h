@@ -4,7 +4,7 @@
 #include "../base/socket_addr.h"
 #include "../base/refcount.h"
 
-class XDTcpServer;
+class XDSocketServer;
 
 class XDBaseSocket : public XDRefCounted
 {
@@ -22,7 +22,7 @@ protected:
     };
 
 public:
-    XDBaseSocket();
+    XDBaseSocket(XDSocketServer *socketServer, XDSocketType type);
     virtual ~XDBaseSocket();
 
     virtual bool create() = 0;
@@ -38,6 +38,10 @@ public:
     XDHandle handle() const { return handle_; }
     XDSocketUtil::XDSockAddr& address() { return addr_; }
     XDSocketUtil::XDSockAddr* addressPtr() { return &addr_; }
+    XDSocketType type() const { return type_; }
+
+    void setWorkThreadIndex(int32 index) { workThreadIndex_ = index; }
+    int32 workThreadIndex() const { return workThreadIndex_; }
     
 protected:
     virtual void connMessageCallBack() { }
@@ -45,10 +49,13 @@ protected:
     virtual void connSendMessageCallBack(bool enable) { }
 
 protected:
+    XDSocketServer *socketServer_;
+    XDSocketType type_;
     XDSockFD fd_;
     XDSocketState state_;
     XDSocketUtil::XDSockAddr addr_;
     XDHandle handle_;
+    int32 workThreadIndex_;
 };
 
 #endif // end xd_socket_h

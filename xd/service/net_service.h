@@ -2,6 +2,7 @@
 #define XD_NET_SERVICE_H
 
 #include "service.h"
+#include "../net/socket_dispatcher.h"
 #include "../net/tcp_server.h"
 
 #define XD_NET_SERVICE_NAME "NetService"
@@ -28,7 +29,10 @@ public:
     // 连接rpc服务器
     XDSocketConnecterPtr rpcConnect(const char *host, int32 port, XDTcpClientSocketEventHandler *handler, bool isReconnect = true, int32 maxReconnectAttempts = -1);
 
+    XDSocketDispather& socketDispather() { return socketDispather_; }
+
 protected:
+    XDSocketDispather socketDispather_;
     XDTcpServer frontedTcpServer_;
     XDTcpServerSocketEventHandler *frontedHandler_;
 };

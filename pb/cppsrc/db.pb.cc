@@ -142,6 +142,7 @@ const int Tbl_User::kByteMsgFieldNumber;
 Tbl_User::Tbl_User()
   : ::google::protobuf::Message() {
   SharedCtor();
+  // @@protoc_insertion_point(constructor:DB.Tbl_User)
 }
 
 void Tbl_User::InitAsDefaultInstance() {
@@ -151,9 +152,11 @@ Tbl_User::Tbl_User(const Tbl_User& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
+  // @@protoc_insertion_point(copy_constructor:DB.Tbl_User)
 }
 
 void Tbl_User::SharedCtor() {
+  ::google::protobuf::internal::GetEmptyString();
   _cached_size_ = 0;
   uid_ = GOOGLE_LONGLONG(0);
   channel_ = 0;
@@ -163,20 +166,21 @@ void Tbl_User::SharedCtor() {
   islogin_ = false;
   money1_ = 0;
   money2_ = 0;
-  msg_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  bytemsg_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  msg_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  bytemsg_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
 Tbl_User::~Tbl_User() {
+  // @@protoc_insertion_point(destructor:DB.Tbl_User)
   SharedDtor();
 }
 
 void Tbl_User::SharedDtor() {
-  if (msg_ != &::google::protobuf::internal::kEmptyString) {
+  if (msg_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
     delete msg_;
   }
-  if (bytemsg_ != &::google::protobuf::internal::kEmptyString) {
+  if (bytemsg_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
     delete bytemsg_;
   }
   if (this != default_instance_) {
@@ -205,48 +209,58 @@ Tbl_User* Tbl_User::New() const {
 }
 
 void Tbl_User::Clear() {
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    uid_ = GOOGLE_LONGLONG(0);
-    channel_ = 0;
-    registertime_ = GOOGLE_ULONGLONG(0);
-    lastlogintime_ = GOOGLE_ULONGLONG(0);
-    logintimes_ = 0u;
-    islogin_ = false;
-    money1_ = 0;
-    money2_ = 0;
+#define OFFSET_OF_FIELD_(f) (reinterpret_cast<char*>(      \
+  &reinterpret_cast<Tbl_User*>(16)->f) - \
+   reinterpret_cast<char*>(16))
+
+#define ZR_(first, last) do {                              \
+    size_t f = OFFSET_OF_FIELD_(first);                    \
+    size_t n = OFFSET_OF_FIELD_(last) - f + sizeof(last);  \
+    ::memset(&first, 0, n);                                \
+  } while (0)
+
+  if (_has_bits_[0 / 32] & 255) {
+    ZR_(uid_, money2_);
   }
-  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+  if (_has_bits_[8 / 32] & 768) {
     if (has_msg()) {
-      if (msg_ != &::google::protobuf::internal::kEmptyString) {
+      if (msg_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
         msg_->clear();
       }
     }
     if (has_bytemsg()) {
-      if (bytemsg_ != &::google::protobuf::internal::kEmptyString) {
+      if (bytemsg_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
         bytemsg_->clear();
       }
     }
   }
+
+#undef OFFSET_OF_FIELD_
+#undef ZR_
+
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
 
 bool Tbl_User::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+#define DO_(EXPRESSION) if (!(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  while ((tag = input->ReadTag()) != 0) {
+  // @@protoc_insertion_point(parse_start:DB.Tbl_User)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // required int64 uid = 1;
       case 1: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+        if (tag == 8) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &uid_)));
           set_has_uid();
         } else {
-          goto handle_uninterpreted;
+          goto handle_unusual;
         }
         if (input->ExpectTag(16)) goto parse_channel;
         break;
@@ -254,15 +268,14 @@ bool Tbl_User::MergePartialFromCodedStream(
 
       // required int32 channel = 2;
       case 2: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+        if (tag == 16) {
          parse_channel:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, &channel_)));
           set_has_channel();
         } else {
-          goto handle_uninterpreted;
+          goto handle_unusual;
         }
         if (input->ExpectTag(24)) goto parse_registerTime;
         break;
@@ -270,15 +283,14 @@ bool Tbl_User::MergePartialFromCodedStream(
 
       // required uint64 registerTime = 3;
       case 3: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+        if (tag == 24) {
          parse_registerTime:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
                  input, &registertime_)));
           set_has_registertime();
         } else {
-          goto handle_uninterpreted;
+          goto handle_unusual;
         }
         if (input->ExpectTag(32)) goto parse_lastLoginTime;
         break;
@@ -286,15 +298,14 @@ bool Tbl_User::MergePartialFromCodedStream(
 
       // required uint64 lastLoginTime = 4;
       case 4: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+        if (tag == 32) {
          parse_lastLoginTime:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
                  input, &lastlogintime_)));
           set_has_lastlogintime();
         } else {
-          goto handle_uninterpreted;
+          goto handle_unusual;
         }
         if (input->ExpectTag(40)) goto parse_loginTimes;
         break;
@@ -302,15 +313,14 @@ bool Tbl_User::MergePartialFromCodedStream(
 
       // required uint32 loginTimes = 5;
       case 5: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+        if (tag == 40) {
          parse_loginTimes:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
                  input, &logintimes_)));
           set_has_logintimes();
         } else {
-          goto handle_uninterpreted;
+          goto handle_unusual;
         }
         if (input->ExpectTag(48)) goto parse_isLogin;
         break;
@@ -318,15 +328,14 @@ bool Tbl_User::MergePartialFromCodedStream(
 
       // required bool isLogin = 6;
       case 6: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+        if (tag == 48) {
          parse_isLogin:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
                  input, &islogin_)));
           set_has_islogin();
         } else {
-          goto handle_uninterpreted;
+          goto handle_unusual;
         }
         if (input->ExpectTag(57)) goto parse_money1;
         break;
@@ -334,15 +343,14 @@ bool Tbl_User::MergePartialFromCodedStream(
 
       // required double money1 = 7;
       case 7: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+        if (tag == 57) {
          parse_money1:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
                  input, &money1_)));
           set_has_money1();
         } else {
-          goto handle_uninterpreted;
+          goto handle_unusual;
         }
         if (input->ExpectTag(69)) goto parse_money2;
         break;
@@ -350,15 +358,14 @@ bool Tbl_User::MergePartialFromCodedStream(
 
       // required float money2 = 8;
       case 8: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
+        if (tag == 69) {
          parse_money2:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
                  input, &money2_)));
           set_has_money2();
         } else {
-          goto handle_uninterpreted;
+          goto handle_unusual;
         }
         if (input->ExpectTag(74)) goto parse_msg;
         break;
@@ -366,16 +373,16 @@ bool Tbl_User::MergePartialFromCodedStream(
 
       // required string msg = 9;
       case 9: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+        if (tag == 74) {
          parse_msg:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_msg()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+          ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
             this->msg().data(), this->msg().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
+            ::google::protobuf::internal::WireFormat::PARSE,
+            "msg");
         } else {
-          goto handle_uninterpreted;
+          goto handle_unusual;
         }
         if (input->ExpectTag(82)) goto parse_byteMsg;
         break;
@@ -383,23 +390,23 @@ bool Tbl_User::MergePartialFromCodedStream(
 
       // required bytes byteMsg = 10;
       case 10: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+        if (tag == 82) {
          parse_byteMsg:
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
                 input, this->mutable_bytemsg()));
         } else {
-          goto handle_uninterpreted;
+          goto handle_unusual;
         }
-        if (input->ExpectAtEnd()) return true;
+        if (input->ExpectAtEnd()) goto success;
         break;
       }
 
       default: {
-      handle_uninterpreted:
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-          return true;
+          goto success;
         }
         DO_(::google::protobuf::internal::WireFormat::SkipField(
               input, tag, mutable_unknown_fields()));
@@ -407,12 +414,18 @@ bool Tbl_User::MergePartialFromCodedStream(
       }
     }
   }
+success:
+  // @@protoc_insertion_point(parse_success:DB.Tbl_User)
   return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:DB.Tbl_User)
+  return false;
 #undef DO_
 }
 
 void Tbl_User::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:DB.Tbl_User)
   // required int64 uid = 1;
   if (has_uid()) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(1, this->uid(), output);
@@ -455,16 +468,17 @@ void Tbl_User::SerializeWithCachedSizes(
 
   // required string msg = 9;
   if (has_msg()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
       this->msg().data(), this->msg().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    ::google::protobuf::internal::WireFormatLite::WriteString(
+      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      "msg");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
       9, this->msg(), output);
   }
 
   // required bytes byteMsg = 10;
   if (has_bytemsg()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBytes(
+    ::google::protobuf::internal::WireFormatLite::WriteBytesMaybeAliased(
       10, this->bytemsg(), output);
   }
 
@@ -472,10 +486,12 @@ void Tbl_User::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
   }
+  // @@protoc_insertion_point(serialize_end:DB.Tbl_User)
 }
 
 ::google::protobuf::uint8* Tbl_User::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:DB.Tbl_User)
   // required int64 uid = 1;
   if (has_uid()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(1, this->uid(), target);
@@ -518,9 +534,10 @@ void Tbl_User::SerializeWithCachedSizes(
 
   // required string msg = 9;
   if (has_msg()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
       this->msg().data(), this->msg().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
+      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      "msg");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
         9, this->msg(), target);
@@ -537,6 +554,7 @@ void Tbl_User::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
   }
+  // @@protoc_insertion_point(serialize_to_array_end:DB.Tbl_User)
   return target;
 }
 

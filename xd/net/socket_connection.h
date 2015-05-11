@@ -6,13 +6,11 @@
 #include "../base/mutex.h"
 #include <deque>
 
-class XDTcpServer;
-
 class XDSocketConnection : public XDBaseSocket
 {
 public:
-    XDSocketConnection();
-    XDSocketConnection(XDTcpServer *server);
+    XDSocketConnection(XDSocketServer *socketServer, XDSocketType type);
+    XDSocketConnection(XDSocketServer *socketServer);
     ~XDSocketConnection();
 
     virtual bool create();
@@ -49,7 +47,6 @@ protected:
     virtual void connSendMessageCallBack(bool enable);
 
 protected:
-    XDTcpServer *server_;
     int32 workThreadIndex_;
     
     // read

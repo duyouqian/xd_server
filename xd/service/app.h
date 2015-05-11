@@ -3,8 +3,10 @@
 
 #include "../base/base_object.h"
 
+#include "io_service.h"
 #include "net_service.h"
 #include <string>
+#include <vector>
 
 // default service
 // net_service
@@ -29,16 +31,23 @@ public:
     
     void setID(const std::string& id) { id_ = id; }
     void setType(const std::string& type) { type_ = type; }
+
+    void post(XDITask *task) { ioService_.postTask(task); }
     
     bool registerService(XDBaseService* s);
     bool hasService(const std::string& name) const;
     template <class T> T* findService(const std::string& name);
 
 protected:
+
+protected:
     std::string id_;
     std::string type_;
     bool isMaster_;
     bool isStopped_;
+
+    // io service
+    XDIOService ioService_;
     
     // services
     XDNetService netService_;

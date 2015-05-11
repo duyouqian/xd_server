@@ -7,6 +7,8 @@
 
 #include <map>
 
+class XDTcpServer;
+
 class XDTcpServerDispatcher : public XDSocketServerDispatcher
 {
 public:

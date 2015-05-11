@@ -18,6 +18,12 @@ XDThread::~XDThread()
     join();
 }
 
+bool XDThread::beforeRun()
+{
+    startEvent_.set();
+    return true;
+}
+
 bool XDThread::run()
 {
     bool ret = true;
@@ -31,5 +37,6 @@ bool XDThread::start(XDRunnable *runnable)
 {
     runnable_ = runnable;
     XDBaseThread::start();
+    startEvent_.wait();
     return true;
 }

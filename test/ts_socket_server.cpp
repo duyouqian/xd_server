@@ -18,6 +18,7 @@ int32 main(int32 argc, char **argv)
     XDNetService net(app);
     net.frontedListen(5000);
     net.start();
+    app.run();
     XD_LOG_CLOSE();
     return 0;
 }

@@ -1,9 +1,12 @@
 #include "tcp_server.h"
 #include "socket_connection.h"
-#include "socket_poll.h"
 #include "rpc_message.h"
 #include "socket_handler.h"
+#include "../service/app.h"
+#include "../service/net_service.h"
 #include "../base/log.h"
+#include "../base/interface.h"
+#include "../base/guard_mutex.h"
 #include <functional>
 
 #define XD_IOEVENTTYPE_ACCEPT 0
@@ -36,9 +39,8 @@ public:
     int32 eventType; // 0: create 1: message 2: disconnection
 };
 
-XDTcpServer::XDTcpServer()
-           : XDSocketServer::XDSocketServer()
-           , dispatcher_(this, 5)
+XDTcpServer::XDTcpServer(XDNetService &netService)
+           : XDSocketServer::XDSocketServer(netService)
 {
 
 }
@@ -53,18 +55,14 @@ bool XDTcpServer::init(int32 port)
         return false;
     }
     serverSocketFD_.init(port);
-    dispatcher_.init();
     state_ = ST_INITED;
     return true;
 }
 
-bool XDTcpServer::start()
+bool XDTcpServer::stop()
 {
-    bool ret = XDSocketServer::start();
-    if (ret) {
-        dispatcher_.run();
-    }
-    return ret;
+    XDSocketServer::stop();
+    conns_.clear();
 }
 
 bool XDTcpServer::accept()
@@ -84,51 +82,86 @@ bool XDTcpServer::accept()
         conn.reset();
         return false;
     }
-    //conn->setMessageCallBack(std::bind(&XDTcpServer::connMessageCallBack, this, std::placeholders::_1, std::placeholders::_2));
-    //conn->setDisconnectCallBack(std::bind(&XDTcpServer::connDisconnectCallBack, this, std::placeholders::_1));
-    dispatcher_.accept(conn);
+    //dispatcher_.accept(conn);
+    int32 index = netService_.socketDispather().addSocket(conn->fd(), conn.get());
+    if (netService_.socketDispather().isInvalidIndex(index)) {
+        XD_LOG_mdebug("[TcpServer] serverName:%s connection add poll 失败 [handle:%d fd:%d]", "TcpServer", conn->handle(), connFD);
+        conn.reset();
+        return false;
+    }
+    conn->setWorkThreadIndex(index);
+    addSocket(conn);
     XDTcpIOEventTask *task = new XDTcpIOEventTask(XD_IOEVENTTYPE_ACCEPT);
     task->conn = conn;
     task->handler = handler_;
     check(task);
-    addTask(task);
-//    if (handler_) {
-//        runInLoop(std::bind(&XDTcpServerSocketEventHandler::onAccept, handler_, conn));
-//    }
+    netService_.app().post(task);
+    //addTask(task);
     XD_LOG_mdebug("[TcpServer] serverName:%s 接收新连接成功 [handle:%d fd:%d ip:%s:%d]", "TcpServer", conn->handle(), connFD, conn->address().ip, conn->address().port);
     return true;
 }
 
 void XDTcpServer::connMessageCallBack(XDHandle handle, XDMessage &message)
 {
-    XDSocketConnectionPtr conn = dispatcher_.findConnectByHandle(handle);
+    XDSocketConnectionPtr conn = findSocketByHandle(handle);
     if (conn && handler_) {
         XDTcpIOEventTask *task = new XDTcpIOEventTask(XD_IOEVENTTYPE_MESSAGE);
         task->conn = conn;
         task->handler = handler_;
         task->message = message;
-        addTask(task);
-        //runInLoop(std::bind(&XDTcpServerSocketEventHandler::onMessage, handler_, conn, message));
+        netService_.app().post(task);
     }
 }
 
 void XDTcpServer::connDisconnectCallBack(XDHandle handle)
 {
-    XDSocketConnectionPtr conn = dispatcher_.findConnectByHandle(handle);
-    if (conn && handler_) {
-        XDTcpIOEventTask *task = new XDTcpIOEventTask(XD_IOEVENTTYPE_CLOSE);
-        task->conn = conn;
-        task->handler = handler_;
-        addTask(task);
-        //runInLoop(std::bind(&XDTcpServerSocketEventHandler::onDisconnect, handler_, conn));
+    XDSocketConnectionPtr conn = findSocketByHandle(handle);
+    if (conn) {
+        if (handler_) {
+            XDTcpIOEventTask *task = new XDTcpIOEventTask(XD_IOEVENTTYPE_CLOSE);
+            task->conn = conn;
+            task->handler = handler_;
+            netService_.app().post(task);
+        }
+        netService_.socketDispather().delSocket(conn->fd(), conn->workThreadIndex());
+        XD_LOG_mdebug("[TcpServer] handle:%d fd:%d 断开", handle, conn->fd());
+        conn->close();
+        delSocketByHandle(conn->handle());
     }
-    dispatcher_.closeSocket(handle);
 }
 
 void XDTcpServer::connSendMessageCallBack(XDHandle handle, bool enable)
 {
-    XDSocketConnectionPtr conn = dispatcher_.findConnectByHandle(handle);
+    XDSocketConnectionPtr conn = findSocketByHandle(handle);
     if (conn) {
-        dispatcher_.handleSendMessage(conn, enable);
+        netService_.socketDispather().writeSocket(conn->fd(), conn->workThreadIndex(), conn.get(), enable);
     }
+}
+
+void XDTcpServer::addSocket(XDSocketConnectionPtr socket)
+{
+    XDGuardMutex lock(&mutex_);
+    std::map<XDHandle, XDSocketConnectionPtr>::const_iterator it = conns_.find(socket->handle());
+    if (conns_.end() == it) {
+        conns_[socket->handle()] = socket;
+    }
+}
+
+void XDTcpServer::delSocketByHandle(XDHandle handle)
+{
+    XDGuardMutex lock(&mutex_);
+    std::map<XDHandle, XDSocketConnectionPtr>::iterator it = conns_.find(handle);
+    if (conns_.end() != it) {
+        conns_.erase(it);
+    }
+}
+
+XDSocketConnectionPtr XDTcpServer::findSocketByHandle(XDHandle handle)
+{
+    XDGuardMutex lock(&mutex_);
+    std::map<XDHandle, XDSocketConnectionPtr>::const_iterator it = conns_.find(handle);
+    if (conns_.end() != it) {
+        return it->second;
+    }
+    return NULL;
 }

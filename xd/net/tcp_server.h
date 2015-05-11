@@ -2,31 +2,38 @@
 #define XD_TCP_SERVER_H
 
 #include "socket_server.h"
-#include "tcp_server_dispatcher.h"
+#include "../base/mutex.h"
+#include <map>
 
 class XDTcpServerSocketEventHandler;
-class XDMessage;
 
 class XDTcpServer : public XDSocketServer
 {
 public:
-    XDTcpServer();
+    explicit XDTcpServer(XDNetService &netService);
     ~XDTcpServer();
 
     void setHandler(XDTcpServerSocketEventHandler *handler) { handler_ = handler; }
 
     bool init(int32 port);
-    virtual bool start();
-    virtual bool accept();
+    //virtual bool start();
+    virtual bool stop();
 
-public:
+    // for event loop thread
+    bool accept();
     void connMessageCallBack(XDHandle handle, XDMessage &message);
     void connDisconnectCallBack(XDHandle handle);
     void connSendMessageCallBack(XDHandle handle, bool enable);
 
-private:
-    XDTcpServerDispatcher dispatcher_;
+protected:
+    void addSocket(XDSocketConnectionPtr socket);
+    void delSocketByHandle(XDHandle handle);
+    XDSocketConnectionPtr findSocketByHandle(XDHandle handle);
+
+protected:
     XDTcpServerSocketEventHandler *handler_;
+    XDMutex mutex_;
+    std::map<XDHandle, XDSocketConnectionPtr> conns_;
 };
 
 #endif // end xd_tcp_server_h

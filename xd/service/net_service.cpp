@@ -2,9 +2,6 @@
 #include "../net/socket_handler.h"
 #include "../net/socket_connecter.h"
 
-// test
-#include "../net/socket_poll.h"
-
 class XDNetServerSocketEventHandler : public XDTcpServerSocketEventHandler
 {
 public:
@@ -54,6 +51,8 @@ void XDNetServerSocketEventHandler::onMessage(XDSocketConnectionPtr socket, XDMe
 
 XDNetService::XDNetService(XDApp &app)
             : XDBaseService(app, XD_NET_SERVICE_NAME)
+            , socketDispather_(6)
+            , frontedTcpServer_(*this)
 {
 
 }
@@ -66,10 +65,13 @@ XDNetService::~XDNetService()
 // event poll thread
 bool XDNetService::start()
 {
-    if (frontedTcpServer_.start()) {
-        frontedTcpServer_.poll();
+    if (!socketDispather_.start()) {
+        return false;
     }
-    return false;
+    if (frontedTcpServer_.start()) {
+        return false;
+    }
+    return true;
 }
 
 void XDNetService::afterStart()
@@ -88,7 +90,7 @@ XDSocketConnecterPtr XDNetService::rpcConnect(const char *host, int32 port, XDTc
     bool ret = conn->connect(host, port, handler, isReconnect, maxReconnectAttempts);
     if (ret) {
         //frontedTcpServer_.
-        XDSocketPoll::add(frontedTcpServer_.pollFD(), conn->fd(), conn.get());
+        //XDSocketPoll::add(frontedTcpServer_.pollFD(), conn->fd(), conn.get());
     }
     return conn;
 }

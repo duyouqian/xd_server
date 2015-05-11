@@ -1,11 +1,14 @@
 #include "socket.h"
+#include "socket_server.h"
 #include "../base/socket_util.h"
 #include <string.h>
 
 XDHandle XDBaseSocket::sHandle_ = 0;
 
-XDBaseSocket::XDBaseSocket()
-            : fd_(-1)
+XDBaseSocket::XDBaseSocket(XDSocketServer *socketServer, XDSocketType type)
+            : socketServer_(socketServer)
+            , type_(type)
+            , fd_(-1)
             , state_(ST_INIT)
             , handle_(++sHandle_)
 {

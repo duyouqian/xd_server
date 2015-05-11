@@ -11,6 +11,8 @@ IF(OS_APPLE)
     SET(SRC_NET_XD net/socket_poll.h
                    net/socket_poll.cpp
                    net/socket_kqueue.cpp
+                   net/event_loop.h
+                   net/event_loop.cpp
                    net/socket.h
                    net/socket.cpp
                    net/socket_acceptor.h
@@ -21,8 +23,8 @@ IF(OS_APPLE)
                    net/socket_connecter.cpp
                    net/socket_server.h
                    net/socket_server.cpp
-                   net/socket_server_dispatcher.h
-                   net/socket_server_dispatcher.cpp
+                   net/socket_dispatcher.h
+                   net/socket_dispatcher.cpp
                    net/socket_handler.h
                    net/message.h
                    net/message.cpp
@@ -32,8 +34,6 @@ IF(OS_APPLE)
                    net/rpc_method.cpp
                    net/tcp_server.h
                    net/tcp_server.cpp
-                   net/tcp_server_dispatcher.h
-                   net/tcp_server_dispatcher.cpp
                    net/http_socket.h
                    net/http_socket.cpp)
     SET(SRC_SERVICE_XD ${ALL_SRC_SERVICE_XD})
@@ -44,6 +44,8 @@ IF(OS_LINUX)
     SET(SRC_NET_XD net/socket_poll.h
                    net/socket_poll.cpp
                    net/socket_epoll.cpp
+                   net/event_loop.h
+                   net/event_loop.cpp
                    net/socket.h
                    net/socket.cpp
                    net/socket_acceptor.h
@@ -54,8 +56,8 @@ IF(OS_LINUX)
                    net/socket_connecter.cpp
                    net/socket_server.h
                    net/socket_server.cpp
-                   net/socket_server_dispatcher.h
-                   net/socket_server_dispatcher.cpp
+                   net/socket_dispatcher.h
+                   net/socket_dispatcher.cpp
                    net/socket_handler.h
                    net/message.h
                    net/message.cpp
@@ -65,8 +67,6 @@ IF(OS_LINUX)
                    net/rpc_method.cpp
                    net/tcp_server.h
                    net/tcp_server.cpp
-                   net/tcp_server_dispatcher.h
-                   net/tcp_server_dispatcher.cpp
                    net/http_socket.h
                    net/http_socket.cpp)
     SET(SRC_SERVICE_XD ${ALL_SRC_SERVICE_XD})

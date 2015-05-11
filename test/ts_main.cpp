@@ -6,6 +6,9 @@
 #include "refcount.h"
 #include "rpc_message.h"
 #include "rpc_method.h"
+#include "app.h"
+#include "thread.h"
+#include "interface.h"
 #include <deque>
 #include <functional>
 #include <string>
@@ -120,6 +123,29 @@ class Obj10
     
 };
 
+class Task1 : public XDITask
+{
+public:
+    void operator ()()
+    {
+        XD_LOG_mdebug("[Task] exec");
+    }
+};
+
+class Obj11 : public XDRunnable
+{
+public:
+    Obj11(XDApp &app) : app_(app) { }
+    bool run()
+    {
+        app_.post(new Task1());
+        app_.stop();
+    }
+
+private:
+    XDApp &app_;
+};
+
 void fun1(Obj5 &obj)
 {
     XD_LOG_mdebug("[FUN1] Obj4::ID=%d", obj.getID());
@@ -195,6 +221,12 @@ int32 main(int32 argc, char **argv)
     
     XDRpcMethod::getInstance().processMethod(1, 2, message);
     XDRpcMethod::getInstance().processMethod(1, 3, message);
+
+    XDApp app;
+    Obj11 t13(app);
+    XDThread thread;
+    thread.start(&t13);
+    app.run();
 
     XD_LOG_CLOSE();
     return 0;

@@ -2,7 +2,7 @@
 #include "../base/socket_util.h"
 
 XDSocketConnecter::XDSocketConnecter()
-                 : XDSocketConnection::XDSocketConnection()
+                 : XDSocketConnection::XDSocketConnection(NULL, XDSocketType::SOCKETTYPE_CONNECTER)
                  , handler_(NULL)
                  , isReconnect_(false)
                  , maxReconnectAttempts_(0)
