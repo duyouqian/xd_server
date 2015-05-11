@@ -18,7 +18,7 @@ XDSocketServer::XDSocketServer(XDNetService &netService)
 
 XDSocketServer::~XDSocketServer()
 {
-    stop();
+    //stop();
 }
 
 bool XDSocketServer::start()

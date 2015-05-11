@@ -19,6 +19,8 @@ public:
     bool start();
     bool stop();
 
+    void setThreadNum(int32 num) { threadNum_ = num > 1 ? num - 1 : 0; }
+
     // return -2: failure, -1 : main loop , other work thread index
     // main thread for event loop
     bool acceptSocket(XDSockFD socket, void *ud);
