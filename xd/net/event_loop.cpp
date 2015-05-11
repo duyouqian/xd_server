@@ -7,6 +7,7 @@
 #include "socket_connection.h"
 #include "socket_connecter.h"
 #include <string.h>
+#include <errno.h>
 
 XDEventLoop::XDEventLoop(const char *name)
            : name_(name)
@@ -84,6 +85,7 @@ bool XDEventLoop::start()
 bool XDEventLoop::stop()
 {
     isStop_ = true;
+    return true;
 }
 
 bool XDEventLoop::run()
@@ -147,6 +149,7 @@ bool XDEventLoop::onAcceptHandler(XDSocketPoll::XDEvent *event)
 {
     XDSocketAccept *accept = (XDSocketAccept*)event->ptr;
     accept->accept();
+    return true;
 }
 
 // TODO 可优化
@@ -159,6 +162,7 @@ bool XDEventLoop::onReadHandler(XDSocketPoll::XDEvent *event, XDSocketType type)
         XDSocketConnecter *conn = (XDSocketConnecter *)event->ptr;
         conn->read();
     }
+    return true;
 }
 
 bool XDEventLoop::onWriteHandler(XDSocketPoll::XDEvent *event, XDSocketType type)
@@ -170,6 +174,7 @@ bool XDEventLoop::onWriteHandler(XDSocketPoll::XDEvent *event, XDSocketType type
         XDSocketConnecter *conn = (XDSocketConnecter *)event->ptr;
         conn->onSend();
     }
+    return true;
 }
 
 void XDEventLoop::wakeup()

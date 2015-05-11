@@ -5,7 +5,7 @@ XDBaseService::XDBaseService(XDApp &app, std::string name)
              : app_(app)
              , name_(name)
 {
-
+    app.registerService(this);
 }
 
 XDBaseService::~XDBaseService()

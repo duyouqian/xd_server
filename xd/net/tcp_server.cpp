@@ -61,8 +61,12 @@ bool XDTcpServer::init(int32 port)
 
 bool XDTcpServer::stop()
 {
-    XDSocketServer::stop();
-    conns_.clear();
+    if (XDSocketServer::stop()) {
+        for (std::map<XDHandle, XDSocketConnectionPtr>::iterator it = conns_.begin(); it != conns_.end(); ++it) {
+            it->second->close();
+        }
+    }
+    return true;
 }
 
 bool XDTcpServer::accept()
@@ -143,7 +147,8 @@ void XDTcpServer::addSocket(XDSocketConnectionPtr socket)
     XDGuardMutex lock(&mutex_);
     std::map<XDHandle, XDSocketConnectionPtr>::const_iterator it = conns_.find(socket->handle());
     if (conns_.end() == it) {
-        conns_[socket->handle()] = socket;
+        //conns_[socket->handle()] = socket;
+        conns_.insert(std::make_pair(socket->handle(), socket));
     }
 }
 

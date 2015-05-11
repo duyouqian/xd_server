@@ -51,8 +51,9 @@ void XDNetServerSocketEventHandler::onMessage(XDSocketConnectionPtr socket, XDMe
 
 XDNetService::XDNetService(XDApp &app)
             : XDBaseService(app, XD_NET_SERVICE_NAME)
-            , socketDispather_(6)
-            , frontedTcpServer_(*this)
+            , socketDispather_(1)
+            , frontedHandler_(NULL)
+            , backendHandler_(NULL)
 {
 
 }
@@ -65,10 +66,10 @@ XDNetService::~XDNetService()
 // event poll thread
 bool XDNetService::start()
 {
-    if (!socketDispather_.start()) {
+    if (!XDBaseService::start()) {
         return false;
     }
-    if (frontedTcpServer_.start()) {
+    if (!socketDispather_.start()) {
         return false;
     }
     return true;
@@ -81,24 +82,74 @@ void XDNetService::afterStart()
 
 void XDNetService::stop()
 {
+    if (ST_STOPPED == state_) {
+        return ;
+    }
     
+    // stop client socket
+    stopClientSocket();
+    // stop tcp server (fronted and backend)
+    stopTcpServer();
+    
+    XDBaseService::stop();
 }
 
-XDSocketConnecterPtr XDNetService::rpcConnect(const char *host, int32 port, XDTcpClientSocketEventHandler *handler, bool isReconnect, int32 maxReconnectAttempts)
+XDSocketConnecterPtr XDNetService::connect(const char *host, int32 port, XDTcpClientSocketEventHandler *handler, bool isReconnect, int32 maxReconnectAttempts)
 {
     XDSocketConnecterPtr conn(new XDSocketConnecter());
     bool ret = conn->connect(host, port, handler, isReconnect, maxReconnectAttempts);
     if (ret) {
-        //frontedTcpServer_.
-        //XDSocketPoll::add(frontedTcpServer_.pollFD(), conn->fd(), conn.get());
+        int32 index = socketDispather_.addSocket(conn->fd(), conn.get());
+        if (!socketDispather_.isInvalidIndex(index)) {
+            clientSocketMap_.insert(std::make_pair(conn->handle(), conn));
+        }
     }
     return conn;
 }
 
-void XDNetService::frontedListen(int32 port)
+XDTcpServerPtr XDNetService::listen(int32 port, XDTcpServerSocketEventHandler *handler)
 {
-    static XDNetServerSocketEventHandler defaultFrontedTcpHandler(*this);
-    frontedHandler_ = &defaultFrontedTcpHandler;
-    frontedTcpServer_.setHandler(frontedHandler_);
-    frontedTcpServer_.init(port);
+    XDTcpServerPtr server(new XDTcpServer(*this));
+    server->setHandler(handler);
+    server->init(port);
+    tcpServerMap_.insert(std::make_pair(server->handle(), server));
+    return server;
 }
+
+void XDNetService::setFrontedTCPServerEventHandler(XDTcpServerSocketEventHandler* handler)
+{
+    if (frontedTcpServer_) {
+        frontedTcpServer_->setHandler(handler);
+    }
+    frontedHandler_ = handler;
+}
+
+void XDNetService::setBackendTCPServerEventHandler(XDTcpServerSocketEventHandler* handler)
+{
+    if (backendTcpServer_) {
+        backendTcpServer_->setHandler(handler);
+    }
+    backendHandler_ = handler;
+}
+
+void XDNetService::stopTcpServer()
+{
+    for (std::map<XDHandle, XDTcpServerPtr>::iterator it = tcpServerMap_.begin(); it != tcpServerMap_.end(); ++it) {
+        it->second->stop();
+    }
+}
+
+void XDNetService::stopClientSocket()
+{
+    for (std::map<XDHandle, XDSocketConnecterPtr>::iterator it = clientSocketMap_.begin(); it != clientSocketMap_.end(); ++it) {
+        it->second->close();
+    }
+}
+
+//void XDNetService::frontedListen(int32 port)
+//{
+//    static XDNetServerSocketEventHandler defaultFrontedTcpHandler(*this);
+//    frontedHandler_ = &defaultFrontedTcpHandler;
+//    frontedTcpServer_.setHandler(frontedHandler_);
+//    frontedTcpServer_.init(port);
+//}

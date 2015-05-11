@@ -84,7 +84,6 @@ int32 XDSocketPoll::wait(XDPollFD fd, XDEvent *e, int32 max, int32 millisecond)
     
     int i;
     for (i = 0; i < n; ++i) {
-        struct kevent eeee = ev[i];
         e[i].ptr = ev[i].udata;
         unsigned filter = ev[i].filter;
         e[i].write = (filter == EVFILT_WRITE);

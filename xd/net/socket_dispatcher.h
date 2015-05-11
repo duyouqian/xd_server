@@ -37,6 +37,7 @@ public:
         if (-1 == index || (index >= 0 && index < threadNum_)) {
             return false;
         }
+        return true;
     }
 
 private:

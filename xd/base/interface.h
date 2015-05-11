@@ -5,6 +5,7 @@
 class XDITask
 {
 public:
+    virtual ~XDITask() { }
     virtual void operator ()() = 0;
 };
 

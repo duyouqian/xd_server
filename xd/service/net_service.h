@@ -5,6 +5,8 @@
 #include "../net/socket_dispatcher.h"
 #include "../net/tcp_server.h"
 
+#include <map>
+
 #define XD_NET_SERVICE_NAME "NetService"
 
 class XDApp;
@@ -22,19 +24,32 @@ public:
     virtual void stop();
 
     // 前端服务器监听
-    void frontedListen(int32 port);
+    //void frontedListen(int32 port);
     // 后端RPC服务器监听
-    void backendRpcListen(int32 port);
+    //void backendRpcListen(int32 port);
+    void setFrontedTCPServerEventHandler(XDTcpServerSocketEventHandler* handler);
+    void setBackendTCPServerEventHandler(XDTcpServerSocketEventHandler* handler);
     
-    // 连接rpc服务器
-    XDSocketConnecterPtr rpcConnect(const char *host, int32 port, XDTcpClientSocketEventHandler *handler, bool isReconnect = true, int32 maxReconnectAttempts = -1);
+    // 连接(rpc服务器)
+    XDSocketConnecterPtr connect(const char *host, int32 port, XDTcpClientSocketEventHandler *handler, bool isReconnect = true, int32 maxReconnectAttempts = -1);
+    // 监听
+    XDTcpServerPtr listen(int32 port, XDTcpServerSocketEventHandler *handler);
 
     XDSocketDispather& socketDispather() { return socketDispather_; }
+    
+protected:
+    void stopTcpServer();
+    void stopClientSocket();
 
 protected:
     XDSocketDispather socketDispather_;
-    XDTcpServer frontedTcpServer_;
+    XDTcpServerPtr frontedTcpServer_;
     XDTcpServerSocketEventHandler *frontedHandler_;
+    XDTcpServerPtr backendTcpServer_;
+    XDTcpServerSocketEventHandler *backendHandler_;
+    
+    std::map<XDHandle, XDTcpServerPtr> tcpServerMap_;
+    std::map<XDHandle, XDSocketConnecterPtr> clientSocketMap_;
 };
 
 #endif // end xd_net_service_h

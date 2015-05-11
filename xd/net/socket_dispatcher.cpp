@@ -42,17 +42,17 @@ void XDSocketWorkThread::setName(const char *name)
 
 FROCEINLINE bool XDSocketWorkThread::add(XDSockFD fd, void *ud)
 {
-    eventLoop_.add(fd, ud);
+    return eventLoop_.add(fd, ud);
 }
 
 FROCEINLINE bool XDSocketWorkThread::del(XDSockFD fd)
 {
-    eventLoop_.del(fd);
+    return eventLoop_.del(fd);
 }
 
 FROCEINLINE bool XDSocketWorkThread::write(XDSockFD fd, void *ud, bool enable)
 {
-    eventLoop_.write(fd, ud, enable);
+    return eventLoop_.write(fd, ud, enable);
 }
 
 bool XDSocketWorkThread::start()

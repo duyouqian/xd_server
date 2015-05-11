@@ -138,7 +138,6 @@ const int RpcHeader::kMethodFieldNumber;
 RpcHeader::RpcHeader()
   : ::google::protobuf::Message() {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:RPC.RpcHeader)
 }
 
 void RpcHeader::InitAsDefaultInstance() {
@@ -148,7 +147,6 @@ RpcHeader::RpcHeader(const RpcHeader& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
-  // @@protoc_insertion_point(copy_constructor:RPC.RpcHeader)
 }
 
 void RpcHeader::SharedCtor() {
@@ -159,7 +157,6 @@ void RpcHeader::SharedCtor() {
 }
 
 RpcHeader::~RpcHeader() {
-  // @@protoc_insertion_point(destructor:RPC.RpcHeader)
   SharedDtor();
 }
 
@@ -190,7 +187,7 @@ RpcHeader* RpcHeader::New() const {
 }
 
 void RpcHeader::Clear() {
-  if (_has_bits_[0 / 32] & 3) {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     server_ = 1;
     method_ = 1;
   }
@@ -200,17 +197,14 @@ void RpcHeader::Clear() {
 
 bool RpcHeader::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!(EXPRESSION)) goto failure
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:RPC.RpcHeader)
-  for (;;) {
-    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
+  while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // required .RPC.ServerID server = 1;
       case 1: {
-        if (tag == 8) {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
           int value;
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
@@ -221,7 +215,7 @@ bool RpcHeader::MergePartialFromCodedStream(
             mutable_unknown_fields()->AddVarint(1, value);
           }
         } else {
-          goto handle_unusual;
+          goto handle_uninterpreted;
         }
         if (input->ExpectTag(16)) goto parse_method;
         break;
@@ -229,7 +223,8 @@ bool RpcHeader::MergePartialFromCodedStream(
 
       // required .RPC.MethodID method = 2;
       case 2: {
-        if (tag == 16) {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_method:
           int value;
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
@@ -241,18 +236,17 @@ bool RpcHeader::MergePartialFromCodedStream(
             mutable_unknown_fields()->AddVarint(2, value);
           }
         } else {
-          goto handle_unusual;
+          goto handle_uninterpreted;
         }
-        if (input->ExpectAtEnd()) goto success;
+        if (input->ExpectAtEnd()) return true;
         break;
       }
 
       default: {
-      handle_unusual:
-        if (tag == 0 ||
-            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-          goto success;
+          return true;
         }
         DO_(::google::protobuf::internal::WireFormat::SkipField(
               input, tag, mutable_unknown_fields()));
@@ -260,18 +254,12 @@ bool RpcHeader::MergePartialFromCodedStream(
       }
     }
   }
-success:
-  // @@protoc_insertion_point(parse_success:RPC.RpcHeader)
   return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:RPC.RpcHeader)
-  return false;
 #undef DO_
 }
 
 void RpcHeader::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:RPC.RpcHeader)
   // required .RPC.ServerID server = 1;
   if (has_server()) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
@@ -288,12 +276,10 @@ void RpcHeader::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
   }
-  // @@protoc_insertion_point(serialize_end:RPC.RpcHeader)
 }
 
 ::google::protobuf::uint8* RpcHeader::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // @@protoc_insertion_point(serialize_to_array_start:RPC.RpcHeader)
   // required .RPC.ServerID server = 1;
   if (has_server()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
@@ -310,7 +296,6 @@ void RpcHeader::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:RPC.RpcHeader)
   return target;
 }
 

@@ -38,11 +38,7 @@ int32 main(int32 argc, char **argv)
     //signal(SIGINT, tt);
     //signal(SIGTERM, tt);
     XDApp app;
-    Stop t(app);
-    XDNetService net(app);
-    net.frontedListen(5000);
-    net.start();
-    t.start();
+    app.init(argc, argv);
     app.run();
     XD_LOG_CLOSE();
     return 0;

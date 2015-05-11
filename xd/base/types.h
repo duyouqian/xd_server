@@ -53,6 +53,8 @@ class XDSocketConnection;
 typedef std::shared_ptr<XDSocketConnection> XDSocketConnectionPtr;
 class XDSocketConnecter;
 typedef std::shared_ptr<XDSocketConnecter> XDSocketConnecterPtr;
+class XDTcpServer;
+typedef  std::shared_ptr<XDTcpServer> XDTcpServerPtr;
 // session ptr
 class XDSession;
 typedef std::shared_ptr<XDSession> XDSessionPtr;
