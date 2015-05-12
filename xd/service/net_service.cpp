@@ -1,6 +1,7 @@
 #include "net_service.h"
 #include "../net/socket_handler.h"
 #include "../net/socket_connecter.h"
+#include "../base/log.h"
 
 class XDNetServerSocketEventHandler : public XDTcpServerSocketEventHandler
 {
@@ -47,6 +48,7 @@ void XDNetServerSocketEventHandler::onDisconnect(XDSocketConnectionPtr socket)
 void XDNetServerSocketEventHandler::onMessage(XDSocketConnectionPtr socket, XDMessage& message)
 {
     // 消息处理
+    service_.processMessage(socket, message);
 }
 
 XDNetService::XDNetService(XDApp &app)
@@ -72,6 +74,13 @@ bool XDNetService::start()
     if (!socketDispather_.start()) {
         return false;
     }
+    if (!frontedHandler_) {
+        static XDNetServerSocketEventHandler defaultFrontedHandler(*this);
+        frontedHandler_ = &defaultFrontedHandler;
+    }
+    frontedTcpServer_ = listen(5000, frontedHandler_);
+    check(frontedTcpServer_);
+    frontedTcpServer_->start();
     return true;
 }
 
@@ -132,6 +141,72 @@ void XDNetService::setBackendTCPServerEventHandler(XDTcpServerSocketEventHandler
     backendHandler_ = handler;
 }
 
+void XDNetService::processMessage(XDSocketConnectionPtr socket, XDMessage &message)
+{
+    if (message.header().flags & XDMESSAGE_FLAG_HASRELPID &&
+        message.header().cmdID == XDRESPONSE_MESSAGE_ID) {
+        // reply
+        std::map<XDReplyID, XDReplyRecord>::iterator it =
+                replyRecordMap_.find(message.replyID());
+        if (it != replyRecordMap_.end()) {
+            XDReplyRecord &record = it->second;
+            // timer
+            //record.handler->handleMessage(socket, message);
+            replyRecordMap_.erase(it);
+        } else {
+            XD_LOG_mwarn("[NetService] 消息ID:%d replyID:%d 没有执行体", message.header().cmdID, message.replyID());
+        }
+    } else {
+        // request
+        std::map<XDCmdID, XDInputMessageHandler*>::iterator it =
+                messageHandlerMap_.find(message.header().cmdID);
+        if (it != messageHandlerMap_.end()) {
+            XDInputMessageHandler *handler = it->second;
+            //handler->handleMessage(socket, message);
+        } else {
+            XD_LOG_mwarn("[NetService] 消息ID:%d 没有执行体", message.header().cmdID);
+        }
+    }
+}
+
+XDReplyID XDNetService::getNextReplyID()
+{
+    const XDReplyID MAX_REPLY_ID = 0x7FFFFFFFFFFFFFFF;
+    if (++nextReplyID_ > MAX_REPLY_ID) {
+        nextReplyID_ = 1;
+    }
+    return nextReplyID_;
+}
+
+void XDNetService::registerMessageHandler(XDCmdID cmdID, XDInputMessageHandler *handler)
+{
+    if (messageHandlerMap_.find(cmdID) != messageHandlerMap_.end()) {
+        return;
+    }
+    messageHandlerMap_[cmdID] = handler;
+}
+
+void XDNetService::registerReplyRecord(XDReplyID replyID, XDReplyMessageHandler *handler)
+{
+    if (replyRecordMap_.find(replyID) != replyRecordMap_.end()) {
+        return;
+    }
+    XDReplyRecord res;
+    res.handler = handler;
+    replyRecordMap_[replyID] = res;
+}
+
+XDReplyRecord XDNetService::removeReplyRecord(XDReplyID replyID)
+{
+    XDReplyRecord res;
+    std::map<XDReplyID, XDReplyRecord>::iterator it = replyRecordMap_.find(replyID);
+    if (it != replyRecordMap_.end()) {
+        res = it->second;
+        replyRecordMap_.erase(it);
+    }
+    return res;
+}
+
 void XDNetService::stopTcpServer()
 {
     for (std::map<XDHandle, XDTcpServerPtr>::iterator it = tcpServerMap_.begin(); it != tcpServerMap_.end(); ++it) {
@@ -145,11 +220,3 @@ void XDNetService::stopClientSocket()
         it->second->close();
     }
 }
-
-//void XDNetService::frontedListen(int32 port)
-//{
-//    static XDNetServerSocketEventHandler defaultFrontedTcpHandler(*this);
-//    frontedHandler_ = &defaultFrontedTcpHandler;
-//    frontedTcpServer_.setHandler(frontedHandler_);
-//    frontedTcpServer_.init(port);
-//}

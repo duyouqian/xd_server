@@ -12,6 +12,14 @@
 class XDApp;
 class XDTcpServerSocketEventHandler;
 class XDTcpClientSocketEventHandler;
+class XDInputMessageHandler;
+class XDReplyMessageHandler;
+
+// 消息回复记录
+struct XDReplyRecord
+{
+    XDReplyMessageHandler* handler;
+};
 
 class XDNetService : public XDBaseService
 {
@@ -34,8 +42,16 @@ public:
     XDSocketConnecterPtr connect(const char *host, int32 port, XDTcpClientSocketEventHandler *handler, bool isReconnect = true, int32 maxReconnectAttempts = -1);
     // 监听
     XDTcpServerPtr listen(int32 port, XDTcpServerSocketEventHandler *handler);
-
+    // socket 调度器
     XDSocketDispather& socketDispather() { return socketDispather_; }
+
+    // process message
+    void processMessage(XDSocketConnectionPtr socket, XDMessage &message);
+    uint64 getNextReplyID();
+    void registerMessageHandler(XDCmdID cmdID, XDInputMessageHandler *handler);
+    void registerReplyRecord(XDReplyID replyID, XDReplyMessageHandler *handler);
+    // 移除回复记录
+    XDReplyRecord removeReplyRecord(XDReplyID id);
     
 protected:
     void stopTcpServer();
@@ -50,6 +66,13 @@ protected:
     
     std::map<XDHandle, XDTcpServerPtr> tcpServerMap_;
     std::map<XDHandle, XDSocketConnecterPtr> clientSocketMap_;
+
+
+    XDReplyID nextReplyID_;
+    // 消息处理 <cmdID, handler>
+    std::map<XDCmdID, XDInputMessageHandler*> messageHandlerMap_;
+    // 回复处理 <ReplyID, handler>
+    std::map<XDReplyID, XDReplyRecord> replyRecordMap_;
 };
 
 #endif // end xd_net_service_h

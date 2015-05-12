@@ -59,7 +59,7 @@ void XDSocketConnection::nextReadStep(char *buf,
     readHandle_ = handle;
 }
 
-int32 XDSocketConnection::read()
+int32 XDSocketConnection::onRead()
 {
     int32 ret = 0;
     while (1) {

@@ -19,7 +19,7 @@ public:
     int32 workThreadIndex() const { return workThreadIndex_; }
 
     // read
-    int32 read();
+    int32 onRead();
     
     // close
     void onClose();

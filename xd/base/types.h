@@ -36,6 +36,10 @@ typedef int32 XDSockFD;
 typedef int64 XDHandle;
 // session id
 typedef int64 XDSessionID;
+// command id
+typedef uint32 XDCmdID;
+// message reply id
+typedef uint64 XDReplyID;
 
 typedef enum XDSocketType
 {

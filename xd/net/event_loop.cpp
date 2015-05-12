@@ -157,10 +157,10 @@ bool XDEventLoop::onReadHandler(XDSocketPoll::XDEvent *event, XDSocketType type)
 {
     if (type == XDSocketType::SOCKETTYPE_CONNECTION) {
         XDSocketConnection *conn = (XDSocketConnection *)event->ptr;
-        conn->read();
+        conn->onRead();
     } else if (type == XDSocketType::SOCKETTYPE_CONNECTER) {
         XDSocketConnecter *conn = (XDSocketConnecter *)event->ptr;
-        conn->read();
+        conn->onRead();
     }
     return true;
 }

@@ -90,10 +90,10 @@ public final class DB {
     // @@protoc_insertion_point(enum_scope:DB.ChannelType)
   }
 
-  public interface Tbl_UserOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface Tbl_UserOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:DB.Tbl_User)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required int64 uid = 1;
     /**
      * <code>required int64 uid = 1;</code>
      *
@@ -111,7 +111,6 @@ public final class DB {
      */
     long getUid();
 
-    // required int32 channel = 2;
     /**
      * <code>required int32 channel = 2;</code>
      *
@@ -129,7 +128,6 @@ public final class DB {
      */
     int getChannel();
 
-    // required uint64 registerTime = 3;
     /**
      * <code>required uint64 registerTime = 3;</code>
      *
@@ -147,7 +145,6 @@ public final class DB {
      */
     long getRegisterTime();
 
-    // required uint64 lastLoginTime = 4;
     /**
      * <code>required uint64 lastLoginTime = 4;</code>
      *
@@ -165,7 +162,6 @@ public final class DB {
      */
     long getLastLoginTime();
 
-    // required uint32 loginTimes = 5;
     /**
      * <code>required uint32 loginTimes = 5;</code>
      *
@@ -183,7 +179,6 @@ public final class DB {
      */
     int getLoginTimes();
 
-    // required bool isLogin = 6;
     /**
      * <code>required bool isLogin = 6;</code>
      *
@@ -201,7 +196,6 @@ public final class DB {
      */
     boolean getIsLogin();
 
-    // required double money1 = 7;
     /**
      * <code>required double money1 = 7;</code>
      *
@@ -219,7 +213,6 @@ public final class DB {
      */
     double getMoney1();
 
-    // required float money2 = 8;
     /**
      * <code>required float money2 = 8;</code>
      *
@@ -237,7 +230,6 @@ public final class DB {
      */
     float getMoney2();
 
-    // required string msg = 9;
     /**
      * <code>required string msg = 9;</code>
      *
@@ -264,7 +256,6 @@ public final class DB {
     com.google.protobuf.ByteString
         getMsgBytes();
 
-    // required bytes byteMsg = 10;
     /**
      * <code>required bytes byteMsg = 10;</code>
      *
@@ -286,8 +277,9 @@ public final class DB {
    * Protobuf type {@code DB.Tbl_User}
    */
   public static final class Tbl_User extends
-      com.google.protobuf.GeneratedMessage
-      implements Tbl_UserOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:DB.Tbl_User)
+      Tbl_UserOrBuilder {
     // Use Tbl_User.newBuilder() to construct.
     private Tbl_User(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -374,8 +366,9 @@ public final class DB {
               break;
             }
             case 74: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000100;
-              msg_ = input.readBytes();
+              msg_ = bs;
               break;
             }
             case 82: {
@@ -423,7 +416,6 @@ public final class DB {
     }
 
     private int bitField0_;
-    // required int64 uid = 1;
     public static final int UID_FIELD_NUMBER = 1;
     private long uid_;
     /**
@@ -447,7 +439,6 @@ public final class DB {
       return uid_;
     }
 
-    // required int32 channel = 2;
     public static final int CHANNEL_FIELD_NUMBER = 2;
     private int channel_;
     /**
@@ -471,7 +462,6 @@ public final class DB {
       return channel_;
     }
 
-    // required uint64 registerTime = 3;
     public static final int REGISTERTIME_FIELD_NUMBER = 3;
     private long registerTime_;
     /**
@@ -495,7 +485,6 @@ public final class DB {
       return registerTime_;
     }
 
-    // required uint64 lastLoginTime = 4;
     public static final int LASTLOGINTIME_FIELD_NUMBER = 4;
     private long lastLoginTime_;
     /**
@@ -519,7 +508,6 @@ public final class DB {
       return lastLoginTime_;
     }
 
-    // required uint32 loginTimes = 5;
     public static final int LOGINTIMES_FIELD_NUMBER = 5;
     private int loginTimes_;
     /**
@@ -543,7 +531,6 @@ public final class DB {
       return loginTimes_;
     }
 
-    // required bool isLogin = 6;
     public static final int ISLOGIN_FIELD_NUMBER = 6;
     private boolean isLogin_;
     /**
@@ -567,7 +554,6 @@ public final class DB {
       return isLogin_;
     }
 
-    // required double money1 = 7;
     public static final int MONEY1_FIELD_NUMBER = 7;
     private double money1_;
     /**
@@ -591,7 +577,6 @@ public final class DB {
       return money1_;
     }
 
-    // required float money2 = 8;
     public static final int MONEY2_FIELD_NUMBER = 8;
     private float money2_;
     /**
@@ -615,7 +600,6 @@ public final class DB {
       return money2_;
     }
 
-    // required string msg = 9;
     public static final int MSG_FIELD_NUMBER = 9;
     private java.lang.Object msg_;
     /**
@@ -670,7 +654,6 @@ public final class DB {
       }
     }
 
-    // required bytes byteMsg = 10;
     public static final int BYTEMSG_FIELD_NUMBER = 10;
     private com.google.protobuf.ByteString byteMsg_;
     /**
@@ -709,7 +692,8 @@ public final class DB {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUid()) {
         memoizedIsInitialized = 0;
@@ -919,8 +903,9 @@ public final class DB {
      * Protobuf type {@code DB.Tbl_User}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements protocol.DB.Tbl_UserOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:DB.Tbl_User)
+        protocol.DB.Tbl_UserOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return protocol.DB.internal_static_DB_Tbl_User_descriptor;
@@ -1156,7 +1141,6 @@ public final class DB {
       }
       private int bitField0_;
 
-      // required int64 uid = 1;
       private long uid_ ;
       /**
        * <code>required int64 uid = 1;</code>
@@ -1205,7 +1189,6 @@ public final class DB {
         return this;
       }
 
-      // required int32 channel = 2;
       private int channel_ ;
       /**
        * <code>required int32 channel = 2;</code>
@@ -1254,7 +1237,6 @@ public final class DB {
         return this;
       }
 
-      // required uint64 registerTime = 3;
       private long registerTime_ ;
       /**
        * <code>required uint64 registerTime = 3;</code>
@@ -1303,7 +1285,6 @@ public final class DB {
         return this;
       }
 
-      // required uint64 lastLoginTime = 4;
       private long lastLoginTime_ ;
       /**
        * <code>required uint64 lastLoginTime = 4;</code>
@@ -1352,7 +1333,6 @@ public final class DB {
         return this;
       }
 
-      // required uint32 loginTimes = 5;
       private int loginTimes_ ;
       /**
        * <code>required uint32 loginTimes = 5;</code>
@@ -1401,7 +1381,6 @@ public final class DB {
         return this;
       }
 
-      // required bool isLogin = 6;
       private boolean isLogin_ ;
       /**
        * <code>required bool isLogin = 6;</code>
@@ -1450,7 +1429,6 @@ public final class DB {
         return this;
       }
 
-      // required double money1 = 7;
       private double money1_ ;
       /**
        * <code>required double money1 = 7;</code>
@@ -1499,7 +1477,6 @@ public final class DB {
         return this;
       }
 
-      // required float money2 = 8;
       private float money2_ ;
       /**
        * <code>required float money2 = 8;</code>
@@ -1548,7 +1525,6 @@ public final class DB {
         return this;
       }
 
-      // required string msg = 9;
       private java.lang.Object msg_ = "";
       /**
        * <code>required string msg = 9;</code>
@@ -1570,9 +1546,12 @@ public final class DB {
       public java.lang.String getMsg() {
         java.lang.Object ref = msg_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          msg_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            msg_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -1646,7 +1625,6 @@ public final class DB {
         return this;
       }
 
-      // required bytes byteMsg = 10;
       private com.google.protobuf.ByteString byteMsg_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>required bytes byteMsg = 10;</code>
@@ -1709,7 +1687,7 @@ public final class DB {
     // @@protoc_insertion_point(class_scope:DB.Tbl_User)
   }
 
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_DB_Tbl_User_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -1732,23 +1710,23 @@ public final class DB {
       "\016\n\010protocolB\002DB"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-      new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
-        public com.google.protobuf.ExtensionRegistry assignDescriptors(
-            com.google.protobuf.Descriptors.FileDescriptor root) {
-          descriptor = root;
-          internal_static_DB_Tbl_User_descriptor =
-            getDescriptor().getMessageTypes().get(0);
-          internal_static_DB_Tbl_User_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_DB_Tbl_User_descriptor,
-              new java.lang.String[] { "Uid", "Channel", "RegisterTime", "LastLoginTime", "LoginTimes", "IsLogin", "Money1", "Money2", "Msg", "ByteMsg", });
-          return null;
-        }
-      };
+        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
+          public com.google.protobuf.ExtensionRegistry assignDescriptors(
+              com.google.protobuf.Descriptors.FileDescriptor root) {
+            descriptor = root;
+            return null;
+          }
+        };
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         }, assigner);
+    internal_static_DB_Tbl_User_descriptor =
+      getDescriptor().getMessageTypes().get(0);
+    internal_static_DB_Tbl_User_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_DB_Tbl_User_descriptor,
+        new java.lang.String[] { "Uid", "Channel", "RegisterTime", "LastLoginTime", "LoginTimes", "IsLogin", "Money1", "Money2", "Msg", "ByteMsg", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)
