@@ -194,7 +194,7 @@ bool XDSocketConnection::send(XDRequest &request)
     if (ret) {
         socketServer_->registerReplyRecord(request.replyID(), request.replyHandler(), request.timeout());
     }
-    return ;
+    return ret;
 }
 
 bool XDSocketConnection::send(XDResponse &response)
