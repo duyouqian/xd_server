@@ -8,10 +8,10 @@ public final class Login {
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
   }
-  public interface RegisterOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface RegisterOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:Login.Register)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required .Command.ServiceType type = 1;
     /**
      * <code>required .Command.ServiceType type = 1;</code>
      */
@@ -21,7 +21,6 @@ public final class Login {
      */
     protocol.Command.ServiceType getType();
 
-    // required .Command.ChannelID channel = 2 [default = Normal];
     /**
      * <code>required .Command.ChannelID channel = 2 [default = Normal];</code>
      */
@@ -39,8 +38,9 @@ public final class Login {
    * </pre>
    */
   public static final class Register extends
-      com.google.protobuf.GeneratedMessage
-      implements RegisterOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:Login.Register)
+      RegisterOrBuilder {
     // Use Register.newBuilder() to construct.
     private Register(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -148,7 +148,6 @@ public final class Login {
     }
 
     private int bitField0_;
-    // required .Command.ServiceType type = 1;
     public static final int TYPE_FIELD_NUMBER = 1;
     private protocol.Command.ServiceType type_;
     /**
@@ -164,7 +163,6 @@ public final class Login {
       return type_;
     }
 
-    // required .Command.ChannelID channel = 2 [default = Normal];
     public static final int CHANNEL_FIELD_NUMBER = 2;
     private protocol.Command.ChannelID channel_;
     /**
@@ -187,7 +185,8 @@ public final class Login {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasType()) {
         memoizedIsInitialized = 0;
@@ -313,8 +312,9 @@ public final class Login {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements protocol.Login.RegisterOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:Login.Register)
+        protocol.Login.RegisterOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return protocol.Login.internal_static_Login_Register_descriptor;
@@ -444,7 +444,6 @@ public final class Login {
       }
       private int bitField0_;
 
-      // required .Command.ServiceType type = 1;
       private protocol.Command.ServiceType type_ = protocol.Command.ServiceType.Login;
       /**
        * <code>required .Command.ServiceType type = 1;</code>
@@ -480,7 +479,6 @@ public final class Login {
         return this;
       }
 
-      // required .Command.ChannelID channel = 2 [default = Normal];
       private protocol.Command.ChannelID channel_ = protocol.Command.ChannelID.Normal;
       /**
        * <code>required .Command.ChannelID channel = 2 [default = Normal];</code>
@@ -527,10 +525,10 @@ public final class Login {
     // @@protoc_insertion_point(class_scope:Login.Register)
   }
 
-  public interface RegisterResponseOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface RegisterResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:Login.RegisterResponse)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required .Command.ErrorCode errorCode = 1;
     /**
      * <code>required .Command.ErrorCode errorCode = 1;</code>
      */
@@ -544,8 +542,9 @@ public final class Login {
    * Protobuf type {@code Login.RegisterResponse}
    */
   public static final class RegisterResponse extends
-      com.google.protobuf.GeneratedMessage
-      implements RegisterResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:Login.RegisterResponse)
+      RegisterResponseOrBuilder {
     // Use RegisterResponse.newBuilder() to construct.
     private RegisterResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -642,7 +641,6 @@ public final class Login {
     }
 
     private int bitField0_;
-    // required .Command.ErrorCode errorCode = 1;
     public static final int ERRORCODE_FIELD_NUMBER = 1;
     private protocol.Command.ErrorCode errorCode_;
     /**
@@ -664,7 +662,8 @@ public final class Login {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasErrorCode()) {
         memoizedIsInitialized = 0;
@@ -775,8 +774,9 @@ public final class Login {
      * Protobuf type {@code Login.RegisterResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements protocol.Login.RegisterResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:Login.RegisterResponse)
+        protocol.Login.RegisterResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return protocol.Login.internal_static_Login_RegisterResponse_descriptor;
@@ -893,7 +893,6 @@ public final class Login {
       }
       private int bitField0_;
 
-      // required .Command.ErrorCode errorCode = 1;
       private protocol.Command.ErrorCode errorCode_ = protocol.Command.ErrorCode.Success;
       /**
        * <code>required .Command.ErrorCode errorCode = 1;</code>
@@ -940,12 +939,12 @@ public final class Login {
     // @@protoc_insertion_point(class_scope:Login.RegisterResponse)
   }
 
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_Login_Register_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_Login_Register_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_Login_RegisterResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -967,30 +966,31 @@ public final class Login {
       "\005Login"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-      new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
-        public com.google.protobuf.ExtensionRegistry assignDescriptors(
-            com.google.protobuf.Descriptors.FileDescriptor root) {
-          descriptor = root;
-          internal_static_Login_Register_descriptor =
-            getDescriptor().getMessageTypes().get(0);
-          internal_static_Login_Register_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_Login_Register_descriptor,
-              new java.lang.String[] { "Type", "Channel", });
-          internal_static_Login_RegisterResponse_descriptor =
-            getDescriptor().getMessageTypes().get(1);
-          internal_static_Login_RegisterResponse_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_Login_RegisterResponse_descriptor,
-              new java.lang.String[] { "ErrorCode", });
-          return null;
-        }
-      };
+        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
+          public com.google.protobuf.ExtensionRegistry assignDescriptors(
+              com.google.protobuf.Descriptors.FileDescriptor root) {
+            descriptor = root;
+            return null;
+          }
+        };
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           protocol.Command.getDescriptor(),
         }, assigner);
+    internal_static_Login_Register_descriptor =
+      getDescriptor().getMessageTypes().get(0);
+    internal_static_Login_Register_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_Login_Register_descriptor,
+        new java.lang.String[] { "Type", "Channel", });
+    internal_static_Login_RegisterResponse_descriptor =
+      getDescriptor().getMessageTypes().get(1);
+    internal_static_Login_RegisterResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_Login_RegisterResponse_descriptor,
+        new java.lang.String[] { "ErrorCode", });
+    protocol.Command.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

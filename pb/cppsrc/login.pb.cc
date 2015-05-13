@@ -134,6 +134,7 @@ const int Register::kChannelFieldNumber;
 Register::Register()
   : ::google::protobuf::Message() {
   SharedCtor();
+  // @@protoc_insertion_point(constructor:Login.Register)
 }
 
 void Register::InitAsDefaultInstance() {
@@ -143,6 +144,7 @@ Register::Register(const Register& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
+  // @@protoc_insertion_point(copy_constructor:Login.Register)
 }
 
 void Register::SharedCtor() {
@@ -153,6 +155,7 @@ void Register::SharedCtor() {
 }
 
 Register::~Register() {
+  // @@protoc_insertion_point(destructor:Login.Register)
   SharedDtor();
 }
 
@@ -183,7 +186,7 @@ Register* Register::New() const {
 }
 
 void Register::Clear() {
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+  if (_has_bits_[0 / 32] & 3) {
     type_ = 1;
     channel_ = 1;
   }
@@ -193,14 +196,17 @@ void Register::Clear() {
 
 bool Register::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+#define DO_(EXPRESSION) if (!(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  while ((tag = input->ReadTag()) != 0) {
+  // @@protoc_insertion_point(parse_start:Login.Register)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // required .Command.ServiceType type = 1;
       case 1: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+        if (tag == 8) {
           int value;
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
@@ -211,7 +217,7 @@ bool Register::MergePartialFromCodedStream(
             mutable_unknown_fields()->AddVarint(1, value);
           }
         } else {
-          goto handle_uninterpreted;
+          goto handle_unusual;
         }
         if (input->ExpectTag(16)) goto parse_channel;
         break;
@@ -219,8 +225,7 @@ bool Register::MergePartialFromCodedStream(
 
       // required .Command.ChannelID channel = 2 [default = Normal];
       case 2: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+        if (tag == 16) {
          parse_channel:
           int value;
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
@@ -232,17 +237,18 @@ bool Register::MergePartialFromCodedStream(
             mutable_unknown_fields()->AddVarint(2, value);
           }
         } else {
-          goto handle_uninterpreted;
+          goto handle_unusual;
         }
-        if (input->ExpectAtEnd()) return true;
+        if (input->ExpectAtEnd()) goto success;
         break;
       }
 
       default: {
-      handle_uninterpreted:
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-          return true;
+          goto success;
         }
         DO_(::google::protobuf::internal::WireFormat::SkipField(
               input, tag, mutable_unknown_fields()));
@@ -250,12 +256,18 @@ bool Register::MergePartialFromCodedStream(
       }
     }
   }
+success:
+  // @@protoc_insertion_point(parse_success:Login.Register)
   return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:Login.Register)
+  return false;
 #undef DO_
 }
 
 void Register::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:Login.Register)
   // required .Command.ServiceType type = 1;
   if (has_type()) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
@@ -272,10 +284,12 @@ void Register::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
   }
+  // @@protoc_insertion_point(serialize_end:Login.Register)
 }
 
 ::google::protobuf::uint8* Register::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:Login.Register)
   // required .Command.ServiceType type = 1;
   if (has_type()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
@@ -292,6 +306,7 @@ void Register::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
   }
+  // @@protoc_insertion_point(serialize_to_array_end:Login.Register)
   return target;
 }
 
@@ -394,6 +409,7 @@ const int RegisterResponse::kErrorCodeFieldNumber;
 RegisterResponse::RegisterResponse()
   : ::google::protobuf::Message() {
   SharedCtor();
+  // @@protoc_insertion_point(constructor:Login.RegisterResponse)
 }
 
 void RegisterResponse::InitAsDefaultInstance() {
@@ -403,6 +419,7 @@ RegisterResponse::RegisterResponse(const RegisterResponse& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
+  // @@protoc_insertion_point(copy_constructor:Login.RegisterResponse)
 }
 
 void RegisterResponse::SharedCtor() {
@@ -412,6 +429,7 @@ void RegisterResponse::SharedCtor() {
 }
 
 RegisterResponse::~RegisterResponse() {
+  // @@protoc_insertion_point(destructor:Login.RegisterResponse)
   SharedDtor();
 }
 
@@ -442,23 +460,24 @@ RegisterResponse* RegisterResponse::New() const {
 }
 
 void RegisterResponse::Clear() {
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    errorcode_ = 0;
-  }
+  errorcode_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
 
 bool RegisterResponse::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+#define DO_(EXPRESSION) if (!(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  while ((tag = input->ReadTag()) != 0) {
+  // @@protoc_insertion_point(parse_start:Login.RegisterResponse)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // required .Command.ErrorCode errorCode = 1;
       case 1: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+        if (tag == 8) {
           int value;
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
@@ -469,17 +488,18 @@ bool RegisterResponse::MergePartialFromCodedStream(
             mutable_unknown_fields()->AddVarint(1, value);
           }
         } else {
-          goto handle_uninterpreted;
+          goto handle_unusual;
         }
-        if (input->ExpectAtEnd()) return true;
+        if (input->ExpectAtEnd()) goto success;
         break;
       }
 
       default: {
-      handle_uninterpreted:
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-          return true;
+          goto success;
         }
         DO_(::google::protobuf::internal::WireFormat::SkipField(
               input, tag, mutable_unknown_fields()));
@@ -487,12 +507,18 @@ bool RegisterResponse::MergePartialFromCodedStream(
       }
     }
   }
+success:
+  // @@protoc_insertion_point(parse_success:Login.RegisterResponse)
   return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:Login.RegisterResponse)
+  return false;
 #undef DO_
 }
 
 void RegisterResponse::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:Login.RegisterResponse)
   // required .Command.ErrorCode errorCode = 1;
   if (has_errorcode()) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
@@ -503,10 +529,12 @@ void RegisterResponse::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
   }
+  // @@protoc_insertion_point(serialize_end:Login.RegisterResponse)
 }
 
 ::google::protobuf::uint8* RegisterResponse::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:Login.RegisterResponse)
   // required .Command.ErrorCode errorCode = 1;
   if (has_errorcode()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
@@ -517,6 +545,7 @@ void RegisterResponse::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
   }
+  // @@protoc_insertion_point(serialize_to_array_end:Login.RegisterResponse)
   return target;
 }
 

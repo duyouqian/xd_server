@@ -30,6 +30,7 @@ public:
     const std::string& id() const { return id_; }
     const std::string& type() const { return type_; }
     bool isMaster() const { return isMaster_; }
+    bool isFronted() const { return isFronted_; }
     
     void setID(const std::string& id) { id_ = id; }
     void setType(const std::string& type) { type_ = type; }
@@ -49,7 +50,9 @@ protected:
     std::string id_;
     std::string type_;
     bool isMaster_;
+    bool isFronted_;
     bool isStopped_;
+
 
     // io service
     XDIOService ioService_;

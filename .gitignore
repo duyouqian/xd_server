@@ -35,3 +35,6 @@ tags
 
 # qt cmake
 CMakeLists.txt.user
+
+# clang
+*.clang

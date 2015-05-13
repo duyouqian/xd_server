@@ -154,10 +154,10 @@ public final class RPC {
     // @@protoc_insertion_point(enum_scope:RPC.MethodID)
   }
 
-  public interface RpcHeaderOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface RpcHeaderOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:RPC.RpcHeader)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required .RPC.ServerID server = 1;
     /**
      * <code>required .RPC.ServerID server = 1;</code>
      */
@@ -167,7 +167,6 @@ public final class RPC {
      */
     protocol.RPC.ServerID getServer();
 
-    // required .RPC.MethodID method = 2;
     /**
      * <code>required .RPC.MethodID method = 2;</code>
      */
@@ -181,8 +180,9 @@ public final class RPC {
    * Protobuf type {@code RPC.RpcHeader}
    */
   public static final class RpcHeader extends
-      com.google.protobuf.GeneratedMessage
-      implements RpcHeaderOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:RPC.RpcHeader)
+      RpcHeaderOrBuilder {
     // Use RpcHeader.newBuilder() to construct.
     private RpcHeader(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -290,7 +290,6 @@ public final class RPC {
     }
 
     private int bitField0_;
-    // required .RPC.ServerID server = 1;
     public static final int SERVER_FIELD_NUMBER = 1;
     private protocol.RPC.ServerID server_;
     /**
@@ -306,7 +305,6 @@ public final class RPC {
       return server_;
     }
 
-    // required .RPC.MethodID method = 2;
     public static final int METHOD_FIELD_NUMBER = 2;
     private protocol.RPC.MethodID method_;
     /**
@@ -329,7 +327,8 @@ public final class RPC {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasServer()) {
         memoizedIsInitialized = 0;
@@ -451,8 +450,9 @@ public final class RPC {
      * Protobuf type {@code RPC.RpcHeader}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements protocol.RPC.RpcHeaderOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:RPC.RpcHeader)
+        protocol.RPC.RpcHeaderOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return protocol.RPC.internal_static_RPC_RpcHeader_descriptor;
@@ -582,7 +582,6 @@ public final class RPC {
       }
       private int bitField0_;
 
-      // required .RPC.ServerID server = 1;
       private protocol.RPC.ServerID server_ = protocol.RPC.ServerID.MASTER;
       /**
        * <code>required .RPC.ServerID server = 1;</code>
@@ -618,7 +617,6 @@ public final class RPC {
         return this;
       }
 
-      // required .RPC.MethodID method = 2;
       private protocol.RPC.MethodID method_ = protocol.RPC.MethodID.RegisterServer;
       /**
        * <code>required .RPC.MethodID method = 2;</code>
@@ -665,7 +663,7 @@ public final class RPC {
     // @@protoc_insertion_point(class_scope:RPC.RpcHeader)
   }
 
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_RPC_RpcHeader_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -686,23 +684,23 @@ public final class RPC {
       "\003RPC"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-      new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
-        public com.google.protobuf.ExtensionRegistry assignDescriptors(
-            com.google.protobuf.Descriptors.FileDescriptor root) {
-          descriptor = root;
-          internal_static_RPC_RpcHeader_descriptor =
-            getDescriptor().getMessageTypes().get(0);
-          internal_static_RPC_RpcHeader_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_RPC_RpcHeader_descriptor,
-              new java.lang.String[] { "Server", "Method", });
-          return null;
-        }
-      };
+        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
+          public com.google.protobuf.ExtensionRegistry assignDescriptors(
+              com.google.protobuf.Descriptors.FileDescriptor root) {
+            descriptor = root;
+            return null;
+          }
+        };
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         }, assigner);
+    internal_static_RPC_RpcHeader_descriptor =
+      getDescriptor().getMessageTypes().get(0);
+    internal_static_RPC_RpcHeader_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_RPC_RpcHeader_descriptor,
+        new java.lang.String[] { "Server", "Method", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)
