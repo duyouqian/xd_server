@@ -1,5 +1,6 @@
 #include "app.h"
 #include "../base/log.h"
+#include "../net/socket_handler.h"
 #include "tinyxml2.h"
 
 #include <vector>
@@ -129,6 +130,12 @@ void XDApp::stop()
         isStopped_ = true;
         ioService_.wakeup();
     }
+}
+
+// net service
+XDSocketConnecterPtr XDApp::connect(const char *host, int32 port, XDTcpClientSocketEventHandler *handler, bool isReconnect, int32 maxReconnectAttempts)
+{
+    netService_.connect(host, port, handler, isReconnect, maxReconnectAttempts);
 }
 
 bool XDApp::registerService(XDBaseService *service)

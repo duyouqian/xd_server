@@ -16,6 +16,7 @@
 // master_service -
 // monitor_service -
 
+
 class XDApp : public XDSingleton<XDApp>
 {
 public:
@@ -40,6 +41,9 @@ public:
     bool registerService(XDBaseService* s);
     bool hasService(const std::string& name) const;
     template <class T> T* findService(const std::string& name);
+    
+    // net service
+    XDSocketConnecterPtr connect(const char *host, int32 port, XDTcpClientSocketEventHandler *handler, bool isReconnect = true, int32 maxReconnectAttempts = -1);
 
 protected:
     void startServices();

@@ -9,6 +9,8 @@
 //#include "zmalloc.h"
 // shareptr
 #include <memory>
+// vector
+#include <vector>
 
 // 一些类型定义
 
@@ -64,6 +66,9 @@ typedef  std::shared_ptr<XDTcpServer> XDTcpServerPtr;
 // session ptr
 class XDSession;
 typedef std::shared_ptr<XDSession> XDSessionPtr;
+// server proxy
+class XDServerProxy;
+typedef std::vector<XDServerProxy*> XDServerProxies;
 
 // 在cpp 编译器下使用c编译
 #ifdef __cplusplus

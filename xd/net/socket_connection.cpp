@@ -184,6 +184,24 @@ bool XDSocketConnection::send(XDMessage &message)
     return true;
 }
 
+
+bool XDSocketConnection::send(XDRequest &request)
+{
+    if (request.replyHandler()) {
+        request.setReplyID(socketServer_->getNextReplyID());
+    }
+    bool ret = send((XDMessage&)request);
+    if (ret) {
+        socketServer_->registerReplyRecord(request.replyID(), request.replyHandler(), request.timeout());
+    }
+    return ;
+}
+
+bool XDSocketConnection::send(XDResponse &response)
+{
+    return send((XDMessage&)response);
+}
+
 void XDSocketConnection::onSend()
 {
     if (NULL == curSendMessage_ ||

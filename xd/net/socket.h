@@ -5,13 +5,16 @@
 #include "../base/refcount.h"
 
 class XDSocketServer;
+class XDMessage;
+class XDRequest;
+class XDResponse;
 
 class XDBaseSocket : public XDRefCounted
 {
     friend class XDTcpServer;
 private:
     static XDHandle sHandle_;
-protected:
+public:
     enum XDSocketState
     {
         ST_INIT,
@@ -28,6 +31,9 @@ public:
     virtual bool create() = 0;
     // send
     virtual int32 send(void *data, int32 len);
+    virtual bool send(XDMessage &message) { return false; }
+    virtual bool send(XDRequest &request) { return false; }
+    virtual bool send(XDResponse &response) { return false; }
     // read
     virtual int32 read(void *data, int32 len);
     // close
@@ -39,6 +45,7 @@ public:
     XDSocketUtil::XDSockAddr& address() { return addr_; }
     XDSocketUtil::XDSockAddr* addressPtr() { return &addr_; }
     XDSocketType type() const { return type_; }
+    XDSocketState state() const { return state_; }
 
     void setWorkThreadIndex(int32 index) { workThreadIndex_ = index; }
     int32 workThreadIndex() const { return workThreadIndex_; }

@@ -26,6 +26,8 @@ public:
     
     // send
     bool send(XDMessage &message);
+    bool send(XDRequest &request);
+    bool send(XDResponse &response);
     // in networkt thread
     void onSend();
 

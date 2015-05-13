@@ -10,6 +10,7 @@ struct XDEvent;
 
 class XDMessage;
 class XDNetService;
+class XDReplyMessageHandler;
 
 class XDSocketServer : public XDBaseObject
 {
@@ -37,6 +38,10 @@ public:
     virtual void connSendMessageCallBack(XDHandle handle, bool enable) = 0;
 
     XDHandle handle() const { return handle_; }
+    
+    // for net service
+    XDReplyID getNextReplyID() const;
+    void registerReplyRecord(XDReplyID replyID, XDReplyMessageHandler *handler, int32 timeout);
 
 protected:
     XDSocketAccept serverSocketFD_;

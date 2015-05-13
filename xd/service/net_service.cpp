@@ -179,7 +179,7 @@ void XDNetService::registerMessageHandler(XDCmdID cmdID, XDInputMessageHandler *
     messageHandlerMap_[cmdID] = handler;
 }
 
-void XDNetService::registerReplyRecord(XDReplyID replyID, XDReplyMessageHandler *handler)
+void XDNetService::registerReplyRecord(XDReplyID replyID, XDReplyMessageHandler *handler, int32 timeout)
 {
     if (replyRecordMap_.find(replyID) != replyRecordMap_.end()) {
         return;

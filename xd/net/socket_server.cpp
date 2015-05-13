@@ -61,3 +61,13 @@ bool XDSocketServer::stop()
     serverSocketFD_.close();
     return true;
 }
+
+XDReplyID XDSocketServer::getNextReplyID() const
+{
+    return netService_.getNextReplyID();
+}
+
+void XDSocketServer::registerReplyRecord(XDReplyID replyID, XDReplyMessageHandler *handler, int32 timeout)
+{
+    netService_.registerReplyRecord(replyID, handler, timeout);
+}

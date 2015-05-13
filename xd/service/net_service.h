@@ -49,7 +49,7 @@ public:
     void processMessage(XDSocketPtr socket, XDMessage &message);
     uint64 getNextReplyID();
     void registerMessageHandler(XDCmdID cmdID, XDInputMessageHandler *handler);
-    void registerReplyRecord(XDReplyID replyID, XDReplyMessageHandler *handler);
+    void registerReplyRecord(XDReplyID replyID, XDReplyMessageHandler *handler, int32 timeout);
     // 移除回复记录
     XDReplyRecord removeReplyRecord(XDReplyID id);
     
