@@ -11,9 +11,9 @@ public:
     XDTcpServerSocketEventHandler() { }
     virtual ~XDTcpServerSocketEventHandler() { }
 
-    virtual void onAccept(XDSocketConnectionPtr socket) = 0;
-    virtual void onDisconnect(XDSocketConnectionPtr socket) = 0;
-    virtual void onMessage(XDSocketConnectionPtr socket, XDMessage &message) = 0;
+    virtual void onAccept(XDSocketPtr socket) = 0;
+    virtual void onDisconnect(XDSocketPtr socket) = 0;
+    virtual void onMessage(XDSocketPtr socket, XDMessage &message) = 0;
 };
 
 class XDTcpClientSocketEventHandler : public XDBaseObject
@@ -22,24 +22,24 @@ public:
     XDTcpClientSocketEventHandler() { }
     virtual ~XDTcpClientSocketEventHandler() { }
     
-    virtual void onConnect(XDSocketConnecterPtr socket) = 0;
-    virtual void onReConnect(XDSocketConnecterPtr socket) = 0;
-    virtual void onDisconnect(XDSocketConnecterPtr socket) = 0;
-    virtual void onMessage(XDSocketConnecterPtr socket, XDMessage &message) = 0;
+    virtual void onConnect(XDSocketPtr socket) = 0;
+    virtual void onReConnect(XDSocketPtr socket) = 0;
+    virtual void onDisconnect(XDSocketPtr socket) = 0;
+    virtual void onMessage(XDSocketPtr socket, XDMessage &message) = 0;
 };
 
 class XDInputMessageHandler : public XDBaseObject
 {
 public:
     virtual ~XDInputMessageHandler() {}
-    virtual void handleMessage(XDSocketConnecterPtr socket, XDMessage &message) = 0;
+    virtual void handleMessage(XDSocketPtr socket, XDMessage &message) = 0;
 };
 
 class XDReplyMessageHandler : public XDBaseObject
 {
 public:
     virtual ~XDReplyMessageHandler() { }
-    virtual void handleMessage(XDSocketConnecterPtr socket, XDMessage &message) = 0;
+    virtual void handleMessage(XDSocketPtr socket, XDMessage &message) = 0;
     virtual void handleException(int32 error) = 0;
 };
 

@@ -46,7 +46,7 @@ public:
     XDSocketDispather& socketDispather() { return socketDispather_; }
 
     // process message
-    void processMessage(XDSocketConnectionPtr socket, XDMessage &message);
+    void processMessage(XDSocketPtr socket, XDMessage &message);
     uint64 getNextReplyID();
     void registerMessageHandler(XDCmdID cmdID, XDInputMessageHandler *handler);
     void registerReplyRecord(XDReplyID replyID, XDReplyMessageHandler *handler);

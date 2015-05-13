@@ -53,6 +53,8 @@ typedef uint32 XDTID;
 
 // 智能指针
 // server socket ptr
+class XDBaseSocket;
+typedef std::shared_ptr<XDBaseSocket> XDSocketPtr;
 class XDSocketConnection;
 typedef std::shared_ptr<XDSocketConnection> XDSocketConnectionPtr;
 class XDSocketConnecter;

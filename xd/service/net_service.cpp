@@ -8,9 +8,9 @@ class XDNetServerSocketEventHandler : public XDTcpServerSocketEventHandler
 public:
     XDNetServerSocketEventHandler(XDNetService &service);
     ~XDNetServerSocketEventHandler();
-    virtual void onAccept(XDSocketConnectionPtr socket);
-    virtual void onDisconnect(XDSocketConnectionPtr socket);
-    virtual void onMessage(XDSocketConnectionPtr socket, XDMessage& message);
+    virtual void onAccept(XDSocketPtr socket);
+    virtual void onDisconnect(XDSocketPtr socket);
+    virtual void onMessage(XDSocketPtr socket, XDMessage& message);
 
 private:
     XDNetService &service_;
@@ -28,24 +28,17 @@ XDNetServerSocketEventHandler::~XDNetServerSocketEventHandler()
 
 }
 
-void XDNetServerSocketEventHandler::onAccept(XDSocketConnectionPtr socket)
+void XDNetServerSocketEventHandler::onAccept(XDSocketPtr socket)
 {
     // 创建 session
-    //socket->onClose();
-//    int32 i = 1;
-//    while (i < 10) {
-//        XDMessage msg(i, 0, 0);
-//        socket->send(msg);
-//        ++i;
-//    }
 }
 
-void XDNetServerSocketEventHandler::onDisconnect(XDSocketConnectionPtr socket)
+void XDNetServerSocketEventHandler::onDisconnect(XDSocketPtr socket)
 {
     // 移除 session
 }
 
-void XDNetServerSocketEventHandler::onMessage(XDSocketConnectionPtr socket, XDMessage& message)
+void XDNetServerSocketEventHandler::onMessage(XDSocketPtr socket, XDMessage& message)
 {
     // 消息处理
     service_.processMessage(socket, message);
@@ -141,7 +134,7 @@ void XDNetService::setBackendTCPServerEventHandler(XDTcpServerSocketEventHandler
     backendHandler_ = handler;
 }
 
-void XDNetService::processMessage(XDSocketConnectionPtr socket, XDMessage &message)
+void XDNetService::processMessage(XDSocketPtr socket, XDMessage &message)
 {
     if (message.header().flags & XDMESSAGE_FLAG_HASRELPID &&
         message.header().cmdID == XDRESPONSE_MESSAGE_ID) {
@@ -151,7 +144,7 @@ void XDNetService::processMessage(XDSocketConnectionPtr socket, XDMessage &messa
         if (it != replyRecordMap_.end()) {
             XDReplyRecord &record = it->second;
             // timer
-            //record.handler->handleMessage(socket, message);
+            record.handler->handleMessage(socket, message);
             replyRecordMap_.erase(it);
         } else {
             XD_LOG_mwarn("[NetService] 消息ID:%d replyID:%d 没有执行体", message.header().cmdID, message.replyID());
@@ -162,7 +155,7 @@ void XDNetService::processMessage(XDSocketConnectionPtr socket, XDMessage &messa
                 messageHandlerMap_.find(message.header().cmdID);
         if (it != messageHandlerMap_.end()) {
             XDInputMessageHandler *handler = it->second;
-            //handler->handleMessage(socket, message);
+            handler->handleMessage(socket, message);
         } else {
             XD_LOG_mwarn("[NetService] 消息ID:%d 没有执行体", message.header().cmdID);
         }
