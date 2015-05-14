@@ -4,6 +4,7 @@
 #include "../net/socket_handler.h"
 
 #include <string>
+#include <map>
 
 class XDApp;
 class XDMessage;
@@ -44,6 +45,36 @@ protected:
     std::string type_;
     std::string host_;
     int32 port_;
+};
+
+class XDServerProxyHolder : public XDBaseObject
+{
+public:
+    XDServerProxyHolder();
+    virtual ~XDServerProxyHolder();
+
+    bool addServer(XDServerProxy *server);
+    XDServerProxy* removeServer(const std::string &id);
+    XDServerProxy* removeServer(XDSocketPtr socket);
+    XDServerProxy* findServer(const std::string &id);
+    XDServerProxy* findServer(XDSocketPtr socket);
+    XDServerProxies& findServers(const std::string &type);
+    XDServerProxies& enumServers();
+
+protected:
+    void removeFromProxyArr(XDServerProxy &proxy);
+    void removeFromProxyMap(XDServerProxy &proxy);
+    void removeFromProxyTypeMap(XDServerProxy &proxy);
+
+protected:
+    typedef std::map<std::string, XDServerProxy*> ServerProxyMap;
+    typedef std::map<std::string, XDServerProxies> ServerProxyTypeMap;
+    typedef std::map<XDHandle, XDServerProxy*> ServerProxySocketMap;
+
+    XDServerProxies proxies_;
+    ServerProxyMap proxyMap_;
+    ServerProxyTypeMap proxyTypeMap_;
+    ServerProxySocketMap proxySocketMap_;
 };
 
 #endif // end xd_server_proxy_h
